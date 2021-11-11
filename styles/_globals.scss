@@ -1,0 +1,254 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Open Sans, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 16px;
+  background-color: $bgnd1;
+  color: $color2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.fs-attendance {
+  font-family: Attendance, Open Sans, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.text-white {
+  color: $color2;
+}
+.text-yellow {
+  color: $color1;
+}
+.text-bold {
+  font-weight: 600;
+}
+.text-super-bold {
+  font-weight: 700;
+}
+
+.d-flex {
+  display: flex;
+}
+.space-between {
+  justify-content: space-between;
+}
+
+
+
+.submit-button-wrapper {
+  position: relative;
+  width: 11rem;
+  cursor: pointer;
+
+  .submit-button-shadow {
+    border: 2px solid $color2;
+    border-radius: 999px;
+    background: transparent;
+    width: 100%;
+    height: 2.625rem;
+    position: absolute;
+    top: .625rem;
+  }
+
+  .submit-button{
+    background-color: $color1;
+    border: none;
+    border-radius: 999px;
+    padding: .625rem;
+    width: 100%;
+    line-height: 1.375rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: $color2;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    &:hover {
+      top: .625rem;
+    }
+  }
+}
+
+.main-nav {
+  background-color: $color1;
+  color: $color2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .75rem 4rem .75rem 2rem;
+
+  
+  ul {
+    display: flex;
+    align-items: center;
+
+    list-style: none;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .right-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .main-pages {
+    ul {
+      li {
+        margin: 0 1.4rem;
+        color: $color3;
+      }
+      li.active{
+        color: $color2;
+      }
+    }
+  }
+
+  .socials {
+    margin-left: 4rem;
+
+    ul {
+      li {
+        margin: 0 .75rem;
+        a {
+          img {
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+
+  button.connect {
+    padding: .625rem 1.625rem;
+    background-color: $color4;
+    color: $color2;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: Open Sans;
+    border: none;
+    margin-left: 3.125rem;
+
+    &:hover {
+      background-color: $color1;
+      cursor: pointer;
+    }
+  }
+}
+
+
+.main-footer {
+  background-color: $bgnd3;
+  padding: 2.875rem 15.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .smart-contract {
+    color: $color1;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .copyright {
+    color: $color8;
+  }
+
+  .socials {
+    display: flex;
+    align-items: center;
+
+    list-style: none;
+    font-weight: 600;
+    margin: 0;
+
+    a {
+      border-radius: 999px;
+      border: none;
+      background-color: $color1;
+      padding: 12px 14px;
+      margin: 0 .625rem;
+
+      img {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.corgi-details {
+  max-width: 21.875rem;
+
+  .image-holder {
+    background-image: url('/assets/corgi-image-holder-bgnd.svg');
+    background-repeat: no-repeat;
+    padding: 1.5rem;
+    margin-bottom: .75rem;
+
+    img {
+      width: 18.75rem;
+    }
+  }
+
+  .details-holder {
+    .buttons-row {
+      margin-bottom: 1px;
+
+      button {
+        background-color: $color1;
+        color: $color2;
+        font-weight: 600;
+        font-size: .8125rem;
+        padding: .625rem .8125rem;
+        line-height: 1.125rem;
+        outline: none;
+        cursor: pointer;
+      }
+    }
+
+    .accordion {
+      border-bottom: 1px solid $color5;
+      cursor: pointer;
+
+      .accordion-panel {
+        padding: .9375rem 1.125rem .9375rem 1.3125rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $bgnd2;
+
+        &__title {
+          display: flex;
+          align-items: center;
+          font-weight: 600;
+          font-size: .875rem;
+
+          img {
+            margin-right: .8125rem;
+          }
+        }
+      }
+
+      .accordion-body {
+        padding: .75rem 1.125rem;
+        background-color: $bgnd4;
+        color: $color7;
+        line-height: 1.375rem;
+        font-size: .8125rem;
+        
+        div {
+          margin: .25rem 0;
+        }
+      }
+    }
+  }
+}

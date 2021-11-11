@@ -1,0 +1,55 @@
+.my-corgis{
+  width: 100%;
+  max-width: 69.375rem;
+  min-height: calc(100vh - 17rem);
+  margin: 0 auto;
+
+  h1 {
+    font-size: 4.375rem;
+    font-family: Attendance, sans-serif;
+    color: $color1;
+    margin: 4.375rem 0 2.8125rem 0;
+  }
+
+  .sploot-balance-section {
+    padding: .9375rem;
+    background-color: $bgnd2;    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .sploot-balance {
+      display: flex;
+
+      .balance-numbers{
+        margin-left: 1.625rem;
+        color: $color7;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .not-found-corgi{
+    text-align: center;
+
+    h3 {
+      font-weight: 700;
+      font-size: 1.5625rem;
+      line-height: 2.125rem;
+      margin-bottom: 1.5625rem;
+    }
+
+    p {
+      line-height: 1.6875rem;
+      color: $color7;
+    }
+  }
+
+  .corgi-holdings {
+    margin-top: 1.875rem;
+    margin-bottom: 6.25rem;
+    
+    display: flex;
+    justify-content: space-between;
+  }
+}

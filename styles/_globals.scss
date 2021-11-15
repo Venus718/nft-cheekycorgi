@@ -69,7 +69,6 @@ a {
     font-weight: 600;
     color: $color2;
     position: relative;
-    z-index: 2;
     cursor: pointer;
     &:hover {
       top: .625rem;
@@ -201,7 +200,9 @@ a {
 
   .details-holder {
     .buttons-row {
-      margin-bottom: 1px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
 
       button {
         background-color: $color1;
@@ -210,8 +211,15 @@ a {
         font-size: .8125rem;
         padding: .625rem .8125rem;
         line-height: 1.125rem;
+        border: none;
         outline: none;
         cursor: pointer;
+
+        &:nth-of-type(2) {
+          margin-right: 2px;
+          margin-left: 2px;
+          flex-grow: 1;
+        }
       }
     }
 
@@ -251,4 +259,8 @@ a {
       }
     }
   }
+}
+
+.ReactModal__Overlay{
+  background-color: rgba(0, 0, 0, 0.75)!important;
 }

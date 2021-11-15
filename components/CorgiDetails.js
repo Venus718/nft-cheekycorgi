@@ -2,8 +2,17 @@ import React, {useState} from 'react'
 import {CONTRACT_ADDRESS} from '../data/contract'
 import {toReduced} from '../utils/address'
 
-export default function CorgiDetails({id, uri, name, bio}) {
+export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
   const [activeAccordionId, setActiveAccordionId] = useState(-1)
+  const onClickChangeName = (e) => {
+    e.preventDefault()
+    onChangeRequest(id, true)
+  }
+  const onClickChangeBio = (e) => {
+    e.preventDefault()
+    onChangeRequest(id, false)
+  }
+
   const toggleHandler = (accordionId) => {
     if (activeAccordionId !== accordionId) {
       setActiveAccordionId(accordionId)
@@ -20,8 +29,8 @@ export default function CorgiDetails({id, uri, name, bio}) {
 
       <div className="details-holder">
         <div className="buttons-row">
-          <button>Change Name</button>
-          <button>Change Bio</button>
+          <button onClick={onClickChangeName}>Change Name</button>
+          <button onClick={onClickChangeBio}>Change Bio</button>
           <button>Link to Opensea</button>
         </div>
 
@@ -30,13 +39,21 @@ export default function CorgiDetails({id, uri, name, bio}) {
           icon="/icons/name.svg"
           opened={activeAccordionId === 0} 
           toggleHandler={() => toggleHandler(0)}
-        />
+        >
+          <div>
+            <div>Teddy Bailey</div>
+          </div>
+        </Accordion>
         <Accordion
           title="Bio"
           icon="/icons/bio.svg"
           opened={activeAccordionId === 1}
           toggleHandler={() => toggleHandler(1)}
-        />
+        >
+          <div>
+            <div>Bro</div>
+          </div>
+        </Accordion>
         <Accordion 
           title="Details"
           icon="/icons/details.svg"

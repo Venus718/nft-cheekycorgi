@@ -1,8 +1,12 @@
+import Head from 'next/head'
 import React from 'react'
 
 export default function Faq() {
   return (
     <div className="about-sploot">
+      <Head>
+        <title>FAQ | CheekyCorgi.com</title>
+      </Head>
       <div className="what-is-sploot">
         <img src="/assets/corgi.svg" /> <span>What is SPLOOT?</span>
       </div>
@@ -36,11 +40,31 @@ export default function Faq() {
 
         <div className="sploot-supply-info">
           <div className="info-card">
-            <p>
-              <span className="text-yellow text-super-bold">5 $SPLOOT</span> Supply:
-            </p>
-            <p>XXXXXX</p>
-            <p style={{marginTop: '27px'}}><span className="text-yellow text-super-bold">$SPLOOT</span> Smart Contract:</p>
+            <span className="info-card-bgnd"></span>
+            <div className="info-card-body">
+              <p>
+                <span className="text-yellow text-super-bold">$SPLOOT</span> Supply:
+              </p>
+              <p>XXXXXX</p>
+              <p style={{marginTop: '27px'}}><span className="text-yellow text-super-bold">$SPLOOT</span> Smart Contract:</p>
+              <p>
+                <a href="https://etherscan.io/address/0xa9ad7f75ed971a74b4f09fcf680c92cdbc940078">
+                  https://etherscan.io/address/0xa9ad7f75ed971a74b4f09fcf680c92cdbc940078
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="info-card">
+            <span className="info-card-bgnd"></span>
+            <div className="info-card-body">
+              <p>
+                <span className="text-yellow text-super-bold">$SPLOOT</span> is the utility token that fuels the CheekyCorgi ecosystem. It is NOT an investment and has NO economic value.
+              </p>
+              <p style={{marginTop: '27px'}}>
+                Each CheekyCorgi is able to claim 5 $SPLOOT tokens per day. Total circulation of $SPLOOT token is 8,888,888 only, make every SPLOOT precious and rare.
+              </p>
+            </div>
           </div>
         </div>
       </div>

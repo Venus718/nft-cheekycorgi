@@ -30,6 +30,7 @@
   }
 
   .not-found-corgi{
+    margin-top: 7.5rem;
     text-align: center;
 
     h3 {
@@ -51,5 +52,65 @@
     
     display: flex;
     justify-content: space-between;
+  }
+}
+
+.change-corgi-modal {
+  position: relative;
+  a.close {
+    padding: .625rem 1rem;
+    background-color: $color2;
+    border-radius: 99px;
+    position: fixed;
+    top: calc(30% - 1rem);
+    left: calc(50vw + 10rem);
+    cursor: pointer;
+  }
+
+  h3.change-value-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: .75rem;
+  }
+  
+  input.corgi-value {
+    border: none;
+    border-radius: 99px;
+    background-color: $bgnd4;
+    color: $color2;
+    padding: .8125rem 1.6875rem;
+    outline: none;
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: .9375rem;
+  
+    &::placeholder {
+      color: $color10;
+    }
+  }
+  
+  button.submit-corgi-change{
+    border: none;
+    border-radius: 99px;
+    padding: .8125rem 1.6875rem;
+    width: 100%;
+    display: block;
+    background-color: $color1;
+    color: $color2;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: .9375rem;
+  
+    &:hover {
+      background-color: $color4;
+    }
+  }
+  
+  p.change-corgi-fee {
+    text-align: center;
+    font-weight: 600;
+    margin: 0;
   }
 }

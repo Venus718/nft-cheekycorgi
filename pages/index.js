@@ -1,10 +1,66 @@
+import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import SubmitButton from '../components/SubmitButton'
+import Modal from 'react-modal'
+
+const CoinSelectionModalStyles = {
+  content: {
+    width: '19rem',
+    height: '17.5rem',
+    margin: '0 auto',
+    top: '30%',
+    borderRadius: '1.25rem',
+    backgroundColor: '#292521',
+    padding: '1.5625rem',
+    border: 'none'
+  }
+}
+
+const PaymentMethod = ({label, icon, active, onClick}) => {
+  const onClickHandler = (e) => {
+    e.preventDefault()
+    onClick()
+  }
+
+  return (
+    <div className="payment-item">
+      <a
+        href="#" 
+        className={`payment-item__info ${active ? 'active' : ''}`}
+        onClick={onClickHandler}
+      >
+        <img src={icon} />
+        <span>{label}</span>
+      </a>
+      <div className="payment-item__checked">
+      {
+        active && <img src="/icons/coin-selected.svg" />
+      }
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
+  const [showCoinsModal, setShowCoinsModal] = useState(false)
+  const [selectedCoin, setSelectedCoin] = useState()
+
+  const onSelectCoinsModal = (e) => {
+    e.preventDefault()
+    setShowCoinsModal(true)
+  }
+
+  const onSelectedCoin = (_coin) => {
+    setSelectedCoin(_coin)
+    setShowCoinsModal(false)
+  }
+
   return (
     <div className="home">
+      <Head>
+        <title>Home | CheekyCorgi.com</title>
+      </Head>
       <div className="public-mint-wrapper">
         <h1>Public Mint</h1>
         <p className="comment">
@@ -25,15 +81,27 @@ export default function Home() {
           </div>
 
           <div className="token-selector">
-            <a href="#">
-              Pay By&nbsp;&nbsp;
-              <img src="/icons/down.svg" alt="down" />
+            <a href="#" onClick={onSelectCoinsModal}>
+            {
+              !selectedCoin ? (
+                <div className="not-selected">
+                  Pay By&nbsp;&nbsp;
+                  <img src="/icons/down.svg" alt="down" />
+                </div>
+              ) : (
+                <div className="selected">
+                  <img src={`/icons/coin-${selectedCoin}.svg`} />&nbsp;&nbsp;
+                  {selectedCoin.toUpperCase()}&nbsp;&nbsp;
+                  <img src="/icons/down.svg" alt="down" />
+                </div>
+              )
+            }
             </a>
           </div>
         </div>
 
         <p className="total-price">
-          Total Price: 0 ETH
+          Total Price: 0
         </p>
 
         <div className="mint-button-holder">
@@ -44,6 +112,18 @@ export default function Home() {
           Minted Corgi: 7700
         </p>
       </div>
+
+      <Modal
+        isOpen={showCoinsModal}
+        onRequestClose={() => setShowCoinsModal(false)}
+        style={CoinSelectionModalStyles}
+      >
+        <h3 className="payment-selection-title">Select Payment Option</h3>
+        <PaymentMethod icon="/icons/coin-eth.svg" label="ETH" active={selectedCoin==='eth'} onClick={() => onSelectedCoin('eth')} />
+        <PaymentMethod icon="/icons/coin-shiba.svg" label="Shiba" active={selectedCoin==='shiba'} onClick={() => onSelectedCoin('shiba')} />
+        <PaymentMethod icon="/icons/coin-usdt.svg" label="USDT" active={selectedCoin==='usdt'} onClick={() => onSelectedCoin('usdt')} />
+        <PaymentMethod icon="/icons/coin-usdc.svg" label="USDC" active={selectedCoin==='usdc'} onClick={() => onSelectedCoin('usdc')} />
+      </Modal>
     </div>
   )
 }

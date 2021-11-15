@@ -47,6 +47,7 @@
     .checkout-inputs{
       display: flex;
       align-items: center;
+      justify-content: center;
 
       .quantity-wrapper{
         width: 17rem;
@@ -84,11 +85,22 @@
         border-radius: 0 99px 99px 0;
         background-color: $bgnd4;
         margin-left: 2px;
-        padding: 0.9375rem;
         color: $color8;
 
         a {
           font-weight: 700;
+
+          div {
+            display: flex;
+            align-items: center;
+          }
+
+          .not-selected {
+            padding: 0.9375rem;
+          }
+          .selected {
+            padding: 0.625rem;
+          }
         }
       }
     }
@@ -108,6 +120,36 @@
     .total-minted {
       margin-top: 1.875rem;
       color: $color7;
+    }
+  }
+}
+
+h3.payment-selection-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: .9375rem 0;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.5;
+
+    &:hover, &.active {
+      opacity: 1;
+    }
+
+    img {
+      margin-right: .6875rem;
+    }
+    span {
+      font-weight: 700;
     }
   }
 }

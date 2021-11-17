@@ -47,6 +47,9 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState()
 
   const [quantity, setQuantity] = useState(0)
+  const onChangeQuantityInput = (e) => {
+    e.preventDefault()
+  }
 
   const onSelectCoinsModal = (e) => {
     e.preventDefault()
@@ -78,7 +81,7 @@ export default function Home() {
 
         <div className="checkout-inputs">
           <div className="quantity-wrapper">
-            <input type="number" className="quantity-input" value={quantity} />
+            <input type="number" className="quantity-input" value={quantity} onChange={onChangeQuantityInput} />
             <span className="quantity-label">QUANTITY</span>
           </div>
 

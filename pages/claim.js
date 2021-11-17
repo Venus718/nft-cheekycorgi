@@ -7,6 +7,10 @@ import Modal from 'react-modal'
 export default function Claim() {
   const [quantity, setQuantity] = useState(0)
 
+  const onChangeQuantityInput = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <div className="claim">
       <Head>
@@ -15,7 +19,7 @@ export default function Claim() {
       <div className="public-mint-wrapper">
         <h1>Exclusive Partnership</h1>
         <p className="comment">
-          Friend, here's your free CheekyCorgi<br/>
+          Friend, here&apos;s your free CheekyCorgi<br/>
           buddy for claiming. Cheers to friendship!
         </p>
         <p className="account-info">
@@ -27,7 +31,7 @@ export default function Claim() {
 
         <div className="checkout-inputs">
           <div className="quantity-wrapper">
-            <input type="number" className="quantity-input" value={quantity} />
+            <input type="number" className="quantity-input" value={quantity} onChange={onChangeQuantityInput} />
             <span className="quantity-label">QUANTITY</span>
           </div>
         </div>

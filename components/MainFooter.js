@@ -6,9 +6,10 @@ export default function MyCorgis() {
   return (
     <footer className="main-footer">
       <a 
-        href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.CHEEKY_CORGI_CONTRACT_ADDRESS + '#code'} 
+        href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.NFT_CONTRACT_ADDRESS + '#code'} 
         className="smart-contract"
         target="_blank"
+        rel="noreferrer"
       >
         Smart Contract
       </a>

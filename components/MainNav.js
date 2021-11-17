@@ -40,31 +40,27 @@ export default function MainNav() {
         <div className="socials">
           <ul>
             <li>
-              <a href="https://twitter.com">
+              <a href="https://twitter.com/cheeky_corgi">
                 <img src="/assets/twitter.svg" alt="Twitter" />
               </a>
             </li>
             <li>
-              <a href="https://discord.com">
+              <a href="https://discord.com/invite/AAvqHwf2YR">
                 <img src="/assets/discord.svg" alt="Discord" />
               </a>
             </li>
             <li>
-              <a href="https://instagram.com">
+              <a href="https://www.instagram.com/cheekycorginft/">
                 <img src="/assets/instagram.svg" alt="Instagram" />
               </a>
             </li>
             <li>
-              <a href="https://opensea.com">
+              <a href="https://opensea.com/collection/cheekycorgi">
                 <img src="/assets/opensea.svg" alt="Opensea" />
               </a>
             </li>
           </ul>
         </div>
-
-        <button className="connect">
-          Connect Wallet
-        </button>
       </div>
     </nav>
   )

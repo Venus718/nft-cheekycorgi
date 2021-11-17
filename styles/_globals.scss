@@ -84,7 +84,6 @@ a {
   align-items: center;
   padding: .75rem 4rem .75rem 2rem;
 
-  
   ul {
     display: flex;
     align-items: center;
@@ -125,23 +124,6 @@ a {
       }
     }
   }
-
-  button.connect {
-    padding: .625rem 1.625rem;
-    background-color: $color4;
-    color: $color2;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 1rem;
-    font-family: Open Sans;
-    border: none;
-    margin-left: 3.125rem;
-
-    &:hover {
-      background-color: $color1;
-      cursor: pointer;
-    }
-  }
 }
 
 
@@ -180,6 +162,43 @@ a {
       img {
         vertical-align: middle;
       }
+    }
+  }
+}
+
+.connect-wallet-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+
+  h1 {
+    font-size: 2.8125rem;
+    font-family: Attendance, sans-serif;
+    color: $color1;
+    margin: 0;
+    padding-bottom: 0.75rem;
+  }
+
+  .comment {
+    margin-top: 0;
+    margin-bottom: 4rem;
+  }
+
+  button.connect {
+    padding: .625rem 3.625rem;
+    background-color: $color4;
+    color: $color2;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: Open Sans;
+    border: none;
+
+    &:hover {
+      background-color: $color1;
+      cursor: pointer;
     }
   }
 }

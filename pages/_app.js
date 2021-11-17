@@ -1,4 +1,7 @@
+import { Provider } from 'react-redux'
 import Head from 'next/head'
+
+import store from '../redux'
 import '../styles/main.scss'
 import MainLayout from '../layouts/MainLayout'
 
@@ -10,9 +13,11 @@ function MyApp({ Component, pageProps }) {
         <link rel="stylesheet" type="text/css" href="/attendance.css" />
       </Head>
 
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
+      <Provider store={store}>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </Provider>
     </>
   )
 }

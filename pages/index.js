@@ -109,7 +109,7 @@ export default function Home() {
         </div>
         
         <p className="total-minted">
-          Minted Corgi: 7700
+          Minted Corgi: xxx / 7700
         </p>
       </div>
 

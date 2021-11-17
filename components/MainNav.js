@@ -19,6 +19,11 @@ export default function MainNav() {
                 Home
               </Link>
             </li>
+            <li className={router.pathname == '/claim' ? 'active' : ''}>
+              <Link href="/claim">
+                Claim
+              </Link>
+            </li>
             <li>
               <Link href="/">
                 OG Corgis

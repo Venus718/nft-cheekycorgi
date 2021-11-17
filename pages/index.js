@@ -46,6 +46,8 @@ export default function Home() {
   const [showCoinsModal, setShowCoinsModal] = useState(false)
   const [selectedCoin, setSelectedCoin] = useState()
 
+  const [quantity, setQuantity] = useState(0)
+
   const onSelectCoinsModal = (e) => {
     e.preventDefault()
     setShowCoinsModal(true)
@@ -57,7 +59,7 @@ export default function Home() {
   }
 
   return (
-    <div className="home">
+    <div className="mint">
       <Head>
         <title>Home | CheekyCorgi.com</title>
       </Head>
@@ -76,7 +78,7 @@ export default function Home() {
 
         <div className="checkout-inputs">
           <div className="quantity-wrapper">
-            <input type="number" className="quantity-input" />
+            <input type="number" className="quantity-input" value={quantity} />
             <span className="quantity-label">QUANTITY</span>
           </div>
 

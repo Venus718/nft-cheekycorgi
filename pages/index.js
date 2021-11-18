@@ -50,10 +50,10 @@ const PaymentMethod = ({label, icon, active, onClick}) => {
   )
 }
 
-const ApproveCoinModalStyles = {
+const ApproveCoinModalStyles = (noIncludingApprove = true) => ({
   content: {
     width: '21rem',
-    height: '24.5rem',
+    height: noIncludingApprove ? '22.5rem' : '26.5rem',
     borderRadius: '0',
     margin: '0 auto',
     top: '30%',
@@ -61,7 +61,7 @@ const ApproveCoinModalStyles = {
     backgroundColor: '#292521',
     border: '1px solid #FF9136'
   }
-}
+})
 
 export default function Home() {
   const wallet = useSelector(state => state.wallet)
@@ -81,14 +81,17 @@ export default function Home() {
   const [showCoinsModal, setShowCoinsModal] = useState(false)
 
   const [selectedCoin, setSelectedCoin] = useState()
+  const [selectedCoinTitle, setSelectedCoinTitle] = useState()
   const [quantity, setQuantity] = useState(0)
+  const [unitPrice, setUnitPrice] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
 
   const [totalSupply, setTotalSupply] = useState()
   const [balanceOf, setBalanceOf] = useState(0)
   const [statusLoaded, setStatusLoaded] = useState(false)
 
-  const [showApproveModal, setShowApproveModal] = useState(false)
+  const [noNeedApprove, setNoNeedApprove] = useState(false)
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
 
   const activePaymentMethod = () => paymentMethods.find(e => e.name === selectedCoin)
 
@@ -113,7 +116,7 @@ export default function Home() {
   const onClickMint = () => {
     console.log('public minting')
 
-    setShowApproveModal(true)
+    setShowCheckoutModal(true)
   }
 
   useEffect(() => {
@@ -130,6 +133,7 @@ export default function Home() {
         {
           id: 0,
           name: 'eth',
+          title: 'ETH',
           displayPrice: Number(web3.utils.fromWei(_publicPriceByEth)),
           price: Number(_publicPriceByEth),
           contract: null,
@@ -137,6 +141,7 @@ export default function Home() {
         {
           id: 1,
           name: 'usdt',
+          title: 'USDT',
           displayPrice: Number(_token1.publicPrice),
           price: Number(_token1.publicPrice) * (10**Number(_token1.decimals)),
           contract: USDT,
@@ -144,6 +149,7 @@ export default function Home() {
         {
           id: 2,
           name: 'usdc',
+          title: 'USDC',
           displayPrice: Number(_token2.publicPrice),
           price: Number(_token2.publicPrice) * (10**Number(_token2.decimals)),
           contract: USDC,
@@ -151,6 +157,7 @@ export default function Home() {
         {
           id: 3,
           name: 'shiba',
+          title: 'Shiba',
           displayPrice: Number(_token3.publicPrice),
           price: Number(_token3.publicPrice) * (10**Number(_token3.decimals)),
           contract: ShibaInu
@@ -171,7 +178,20 @@ export default function Home() {
 
   useEffect(() => {
     if (!activePaymentMethod()) return
-    setTotalPrice((activePaymentMethod().displayPrice * quantity).toFixed(2))
+    let _unitPrice = activePaymentMethod().displayPrice
+    let _price = activePaymentMethod().price
+    let _totalPrice = (_unitPrice * quantity).toFixed(2)
+    setUnitPrice(_unitPrice)
+    setTotalPrice(_totalPrice)
+    setSelectedCoinTitle(activePaymentMethod().title)
+
+    if (selectedCoin === 'eth') {
+      setNoNeedApprove(true)
+    } else {
+      setNoNeedApprove(false)
+    }
+    // check allowance
+
   }, [selectedCoin, quantity])
 
   useEffect(() => {
@@ -253,7 +273,7 @@ export default function Home() {
         </p>
 
         <div className="mint-button-holder">
-          <SubmitButton onClick={onClickMint}>MINT</SubmitButton>
+          <SubmitButton onClick={onClickMint} disabled={!totalPrice}>MINT</SubmitButton>
         </div>
         
         <p className="total-minted">
@@ -274,22 +294,22 @@ export default function Home() {
       </Modal>
 
       <Modal
-        isOpen={showApproveModal}
-        onRequestClose={() => setShowApproveModal(false)}
-        style={ApproveCoinModalStyles}
+        isOpen={showCheckoutModal}
+        onRequestClose={() => setShowCheckoutModal(false)}
+        style={ApproveCoinModalStyles(noNeedApprove)}
       >
         <div className="approve-token-modal">
           <div className="approve-token-modal__title-bar">
             <div>
               <h2>
-                Approve Payment
+                Approve Checkout
               </h2>
               <h3>
-                for minting NFT of CheekyCorgi
+                for minting CheekyCorgi
               </h3>
             </div>
 
-            <a className="close" onClick={() => setShowApproveModal(false)} >
+            <a className="close" onClick={() => setShowCheckoutModal(false)} >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.80241 0.936218L9.11976 0.261684C8.93504 0.0769682 8.62986 0.0769682 8.43711 0.261684L5.03189 3.6668L1.56249 0.197435C1.3777 0.0126389 1.07251 0.0126389 0.879843 0.197435L0.197192 0.88008C0.0123944 1.0648 0.0123944 1.36998 0.197192 1.56273L3.65863 5.02414L0.261441 8.43736C0.0767242 8.62208 0.0767242 8.92726 0.261441 9.12001L0.944092 9.80265C1.12881 9.98737 1.43399 9.98737 1.62674 9.80265L5.03189 6.39746L8.43711 9.80265C8.62182 9.98737 8.92701 9.98737 9.11976 9.80265L9.80241 9.12001C9.98713 8.93529 9.98713 8.63011 9.80241 8.43736L6.38915 5.03217L9.79438 1.62705C9.98713 1.43415 9.98713 1.12896 9.80241 0.936218Z" fill="#FFF"/>
               </svg>
@@ -298,7 +318,40 @@ export default function Home() {
 
           <div className="approve-token-modal__body">
             <p>Kindly approve the transaction in your wallet</p>
+            <div className="selected-tokens-info">
+              <div className="token-label">
+                <img src={`/icons/coin-${selectedCoin}2.svg`} />
+                <div className="token-label__name">{selectedCoinTitle}</div>
+              </div>
+              <div className="token-amount">{totalPrice}</div>
+            </div>
+
+            <div className="checkout-info">
+              <div className="checkout-info__row">
+                <div>Unit Price</div>
+                <div>{unitPrice} {selectedCoinTitle}</div>
+              </div>
+              <div className="checkout-info__row">
+                <div>Quantity</div>
+                <div>{quantity}</div>
+              </div>
+              <div className="checkout-info__row">
+                <div>Total Price</div>
+                <div>{totalPrice} {selectedCoinTitle}</div>
+              </div>
+            </div>
           </div>
+
+          {
+            !noNeedApprove && (
+              <div className="approve-token-modal__confirm">
+                <div>Approve your {selectedCoinTitle} to be paid<br/>into CheekyCorgi</div>
+                <button>Approve</button>
+              </div>
+            )
+          }
+
+          <button className="checkout">Checkout</button>
         </div>
       </Modal>
     </div>

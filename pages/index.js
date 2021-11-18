@@ -303,11 +303,8 @@ export default function Home() {
           <div className="approve-token-modal__title-bar">
             <div>
               <h2>
-                Approve Checkout
+                Approve Mint
               </h2>
-              <h3>
-                for minting CheekyCorgi
-              </h3>
             </div>
 
             <a className="close" onClick={() => setShowCheckoutModal(false)} >
@@ -352,7 +349,7 @@ export default function Home() {
             )
           }
 
-          <button className="checkout">Checkout</button>
+          <button className="checkout">MINT</button>
         </div>
       </Modal>
     </div>

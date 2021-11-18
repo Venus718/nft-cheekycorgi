@@ -177,6 +177,7 @@ export default function Home() {
   }, [nftContract])
 
   useEffect(() => {
+    console.log('recheck allowance')
     if (!activePaymentMethod()) return
     let _unitPrice = activePaymentMethod().displayPrice
     let _price = activePaymentMethod().price
@@ -192,7 +193,7 @@ export default function Home() {
     }
     // check allowance
 
-  }, [selectedCoin, quantity])
+  }, [selectedCoin, quantity, wallet.address])
 
   useEffect(() => {
     const fetchTotalSupply = async () => {
@@ -266,7 +267,7 @@ export default function Home() {
                 </>
               ) :
               (
-                <>Please select "Pay By"</>
+                <>Please select &quot;Pay By&quot;</>
               )
           }
           

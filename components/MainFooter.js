@@ -2,7 +2,6 @@ import React from 'react'
 import * as Config from '../data/contract'
 
 export default function MyCorgis() {
-
   return (
     <footer className="main-footer">
       <a 

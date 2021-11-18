@@ -1,8 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import SubmitButton from '../components/SubmitButton'
+import { useSelector, useDispatch } from 'react-redux'
 import Modal from 'react-modal'
+
+import useContract from '../hooks/useContract'
+import useRefresh from '../hooks/useRefresh'
+
+import SubmitButton from '../components/SubmitButton'
+import { toReduced } from '../utils/address'
+import * as Config from '../data/contract'
+
 
 const CoinSelectionModalStyles = {
   content: {
@@ -42,13 +50,54 @@ const PaymentMethod = ({label, icon, active, onClick}) => {
   )
 }
 
-export default function Home() {
-  const [showCoinsModal, setShowCoinsModal] = useState(false)
-  const [selectedCoin, setSelectedCoin] = useState()
+const ApproveCoinModalStyles = {
+  content: {
+    width: '21rem',
+    height: '24.5rem',
+    borderRadius: '0',
+    margin: '0 auto',
+    top: '30%',
+    padding: '1rem',
+    backgroundColor: '#292521',
+    border: '1px solid #FF9136'
+  }
+}
 
+export default function Home() {
+  const wallet = useSelector(state => state.wallet)
+  const [
+    web3, 
+    nftContract, 
+    yieldContract, 
+    ShibaInu, 
+    USDT, 
+    USDC
+  ] = useContract()
+  const { fastRefresh } = useRefresh()
+
+  const [maxQuantity, setMaxQuantity] = useState(10)
+  const [paymentMethods, setPaymentMethods] = useState([])
+
+  const [showCoinsModal, setShowCoinsModal] = useState(false)
+
+  const [selectedCoin, setSelectedCoin] = useState()
   const [quantity, setQuantity] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0)
+
+  const [totalSupply, setTotalSupply] = useState()
+  const [balanceOf, setBalanceOf] = useState(0)
+  const [statusLoaded, setStatusLoaded] = useState(false)
+
+  const [showApproveModal, setShowApproveModal] = useState(false)
+
+  const activePaymentMethod = () => paymentMethods.find(e => e.name === selectedCoin)
+
   const onChangeQuantityInput = (e) => {
     e.preventDefault()
+    const _newValue = Number(e.target.value)
+    if (_newValue >= 0 && _newValue <= maxQuantity) {
+      setQuantity(_newValue)
+    }
   }
 
   const onSelectCoinsModal = (e) => {
@@ -61,6 +110,83 @@ export default function Home() {
     setShowCoinsModal(false)
   }
 
+  const onClickMint = () => {
+    console.log('public minting')
+
+    setShowApproveModal(true)
+  }
+
+  useEffect(() => {
+    const fetchReadOnlyStatus = async () => {
+      let _maxQuantity = await nftContract.methods.maxPublicQuantity().call()
+      let _token1 = await nftContract.methods.PAYMENT_METHODS(0).call()
+      let _token2 = await nftContract.methods.PAYMENT_METHODS(1).call()
+      let _token3 = await nftContract.methods.PAYMENT_METHODS(2).call()
+      let _publicPriceByEth = await nftContract.methods.publicPrice().call()
+      let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
+      let _totalSupply = await nftContract.methods.totalSupply().call()
+
+      let _paymentMethods = [
+        {
+          id: 0,
+          name: 'eth',
+          displayPrice: Number(web3.utils.fromWei(_publicPriceByEth)),
+          price: Number(_publicPriceByEth),
+          contract: null,
+        },
+        {
+          id: 1,
+          name: 'usdt',
+          displayPrice: Number(_token1.publicPrice),
+          price: Number(_token1.publicPrice) * (10**Number(_token1.decimals)),
+          contract: USDT,
+        },
+        {
+          id: 2,
+          name: 'usdc',
+          displayPrice: Number(_token2.publicPrice),
+          price: Number(_token2.publicPrice) * (10**Number(_token2.decimals)),
+          contract: USDC,
+        },
+        {
+          id: 3,
+          name: 'shiba',
+          displayPrice: Number(_token3.publicPrice),
+          price: Number(_token3.publicPrice) * (10**Number(_token3.decimals)),
+          contract: ShibaInu
+        },
+      ]
+
+      setPaymentMethods(_paymentMethods)
+      setMaxQuantity(Number(_maxQuantity))
+      setBalanceOf(_balanceOf)
+      setTotalSupply(_totalSupply)
+      setStatusLoaded(true)
+    }
+
+    if (nftContract) {
+      fetchReadOnlyStatus()
+    }
+  }, [nftContract])
+
+  useEffect(() => {
+    if (!activePaymentMethod()) return
+    setTotalPrice((activePaymentMethod().displayPrice * quantity).toFixed(2))
+  }, [selectedCoin, quantity])
+
+  useEffect(() => {
+    const fetchTotalSupply = async () => {
+      let _totalSupply = await nftContract.methods.totalSupply().call()
+      setTotalSupply(_totalSupply)
+
+      console.log('Total Supply: ', _totalSupply)
+    }
+
+    if (nftContract) {
+      fetchTotalSupply()
+    }
+  }, [fastRefresh])
+
   return (
     <div className="mint">
       <Head>
@@ -70,18 +196,24 @@ export default function Home() {
         <h1>Public Mint</h1>
         <p className="comment">
           Adopt a CheekyCorgi now!<br/>
-          Max of 5 Corgis per transaction.
+          Max of {maxQuantity} Corgis per transaction.
         </p>
         <p className="account-info">
-          Connected Account: xxxxxx
+          Connected Account: {toReduced(wallet.address, 4)}
         </p>
         <p className="hold-info">
-          Number of Corgis you own: xx
+          Number of Corgis you own: {balanceOf}
         </p>
 
         <div className="checkout-inputs">
           <div className="quantity-wrapper">
-            <input type="number" className="quantity-input" value={quantity} onChange={onChangeQuantityInput} />
+            <input 
+              type="number" 
+              className="quantity-input"
+              value={quantity}
+              onChange={onChangeQuantityInput} 
+              disabled={!statusLoaded}
+            />
             <span className="quantity-label">QUANTITY</span>
           </div>
 
@@ -106,15 +238,26 @@ export default function Home() {
         </div>
 
         <p className="total-price">
-          Total Price: 0
+          {
+            selectedCoin ?
+              (
+                <>
+                  Total Price: {totalPrice}
+                </>
+              ) :
+              (
+                <>Please select "Pay By"</>
+              )
+          }
+          
         </p>
 
         <div className="mint-button-holder">
-          <SubmitButton>MINT</SubmitButton>
+          <SubmitButton onClick={onClickMint}>MINT</SubmitButton>
         </div>
         
         <p className="total-minted">
-          Minted Corgi: xxx / 7700
+          Minted Corgi: {totalSupply} / 7700
         </p>
       </div>
 
@@ -128,6 +271,35 @@ export default function Home() {
         <PaymentMethod icon="/icons/coin-shiba.svg" label="Shiba" active={selectedCoin==='shiba'} onClick={() => onSelectedCoin('shiba')} />
         <PaymentMethod icon="/icons/coin-usdt.svg" label="USDT" active={selectedCoin==='usdt'} onClick={() => onSelectedCoin('usdt')} />
         <PaymentMethod icon="/icons/coin-usdc.svg" label="USDC" active={selectedCoin==='usdc'} onClick={() => onSelectedCoin('usdc')} />
+      </Modal>
+
+      <Modal
+        isOpen={showApproveModal}
+        onRequestClose={() => setShowApproveModal(false)}
+        style={ApproveCoinModalStyles}
+      >
+        <div className="approve-token-modal">
+          <div className="approve-token-modal__title-bar">
+            <div>
+              <h2>
+                Approve Payment
+              </h2>
+              <h3>
+                for minting NFT of CheekyCorgi
+              </h3>
+            </div>
+
+            <a className="close" onClick={() => setShowApproveModal(false)} >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.80241 0.936218L9.11976 0.261684C8.93504 0.0769682 8.62986 0.0769682 8.43711 0.261684L5.03189 3.6668L1.56249 0.197435C1.3777 0.0126389 1.07251 0.0126389 0.879843 0.197435L0.197192 0.88008C0.0123944 1.0648 0.0123944 1.36998 0.197192 1.56273L3.65863 5.02414L0.261441 8.43736C0.0767242 8.62208 0.0767242 8.92726 0.261441 9.12001L0.944092 9.80265C1.12881 9.98737 1.43399 9.98737 1.62674 9.80265L5.03189 6.39746L8.43711 9.80265C8.62182 9.98737 8.92701 9.98737 9.11976 9.80265L9.80241 9.12001C9.98713 8.93529 9.98713 8.63011 9.80241 8.43736L6.38915 5.03217L9.79438 1.62705C9.98713 1.43415 9.98713 1.12896 9.80241 0.936218Z" fill="#FFF"/>
+              </svg>
+            </a>
+          </div>
+
+          <div className="approve-token-modal__body">
+            <p>Kindly approve the transaction in your wallet</p>
+          </div>
+        </div>
       </Modal>
     </div>
   )

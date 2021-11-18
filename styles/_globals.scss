@@ -280,6 +280,42 @@ a {
   }
 }
 
+.approve-token-modal {
+  &__title-bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    h2 {
+      margin: 0;
+      line-height: 1.125rem;
+      font-size: .875rem;
+      font-weight: 600;
+    }
+    h3 {
+      margin: 0;
+      line-height: 1.125rem;
+      font-size: .875rem;
+      font-weight: 400;
+    }
+
+    .close {
+      cursor: pointer;
+    }
+  }
+
+  &__body {
+    background: $bgnd3;
+    margin: 2.5rem 1.25rem;
+    padding: .75rem;
+    
+    p {
+      font-size: .625rem;
+      text-align: center;
+    }
+  }
+}
+
 .ReactModal__Overlay{
   background-color: rgba(0, 0, 0, 0.75)!important;
 }

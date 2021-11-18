@@ -3,8 +3,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import SubmitButton from '../components/SubmitButton'
 import Modal from 'react-modal'
+import useContract from '../hooks/useContract'
 
 export default function Claim() {
+  const [web3, nftContract, yieldContract] = useContract()
+
   const [quantity, setQuantity] = useState(0)
 
   const onChangeQuantityInput = (e) => {

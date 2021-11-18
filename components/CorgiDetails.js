@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import {CONTRACT_ADDRESS} from '../data/contract'
-import {toReduced} from '../utils/address'
+import * as Config from '../data/contract'
+import { toReduced } from '../utils/address'
 
 export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
   const [activeAccordionId, setActiveAccordionId] = useState(-1)
@@ -62,7 +62,16 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
         >
           <div className="d-flex space-between">
             <div>Contract Address</div>
-            <div className="text-yellow text-bold">{toReduced(CONTRACT_ADDRESS, 4)}</div>
+            <div className="text-yellow text-bold">
+            <a 
+              href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.NFT_CONTRACT_ADDRESS} 
+              className="smart-contract"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {toReduced(Config.NFT_CONTRACT_ADDRESS, 4)}
+            </a>
+            </div>
           </div>
           <div className="d-flex space-between">
             <div>Token ID</div>

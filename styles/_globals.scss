@@ -367,6 +367,10 @@ a {
       font-family: Open Sans;
       border: none;
       cursor: pointer;
+
+      &.loader {
+        padding: 0.125rem 1.25rem;
+      }
     }
   }
 

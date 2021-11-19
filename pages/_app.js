@@ -2,9 +2,10 @@ import { Provider } from 'react-redux'
 import Head from 'next/head'
 
 import store from '../redux'
-import '../styles/main.scss'
 import MainLayout from '../layouts/MainLayout'
 import { RefreshContextProvider } from '../contexts/RefreshContext'
+
+import '../styles/main.scss'
 
 function MyApp({ Component, pageProps }) {
   return (

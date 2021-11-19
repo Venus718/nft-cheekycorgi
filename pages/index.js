@@ -3,14 +3,21 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useSelector, useDispatch } from 'react-redux'
 import Modal from 'react-modal'
+import ClipLoader from "react-spinners/ClipLoader"
 
 import useContract from '../hooks/useContract'
 import useRefresh from '../hooks/useRefresh'
 
 import SubmitButton from '../components/SubmitButton'
 import { toReduced } from '../utils/address'
-import * as Config from '../data/contract'
 
+import * as Config from '../data/contract'
+import erc20ABI from "../data/erc20.json"
+
+/**
+ *  [danger] remove the below in the live net deployment, update all included lines
+ */
+const TEST_MODE = 1
 
 const CoinSelectionModalStyles = {
   content: {
@@ -68,10 +75,7 @@ export default function Home() {
   const [
     web3, 
     nftContract, 
-    yieldContract, 
-    ShibaInu, 
-    USDT, 
-    USDC
+    yieldContract
   ] = useContract()
   const { fastRefresh } = useRefresh()
 
@@ -82,16 +86,21 @@ export default function Home() {
 
   const [selectedCoin, setSelectedCoin] = useState()
   const [selectedCoinTitle, setSelectedCoinTitle] = useState()
+  const [selectedCoinContract, setSelectedCoinContract] = useState()
   const [quantity, setQuantity] = useState(0)
   const [unitPrice, setUnitPrice] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
+  const [totalPriceWithDecimals, setTotalPriceWithDecimals] = useState(0)
 
   const [totalSupply, setTotalSupply] = useState()
   const [balanceOf, setBalanceOf] = useState(0)
   const [statusLoaded, setStatusLoaded] = useState(false)
 
-  const [noNeedApprove, setNoNeedApprove] = useState(false)
   const [showCheckoutModal, setShowCheckoutModal] = useState(false)
+  const [noNeedApprove, setNoNeedApprove] = useState(false)
+  const [pendingApprove, setPendingApprove] = useState(false)
+  const [finishedApprove, setFinishedApprove] = useState(false)
+  const [pendingMint, setPendingMint] = useState(false)
 
   const activePaymentMethod = () => paymentMethods.find(e => e.name === selectedCoin)
 
@@ -113,13 +122,40 @@ export default function Home() {
     setShowCoinsModal(false)
   }
 
-  const onClickMint = () => {
-    console.log('public minting')
+  const onClickMint = async () => {
+    console.log('trying mint')
 
-    setShowCheckoutModal(true)
+    if (selectedCoin === 'eth') {
+      
+    } else {
+      let _approvedAmount = await activePaymentMethod().contract.methods.allowance(wallet.address, Config.NFT_CONTRACT_ADDRESS).call()
+      console.log('approved amount: ', _approvedAmount)
+      setNoNeedApprove(totalPriceWithDecimals < _approvedAmount)
+      setFinishedApprove(false)
+
+      setShowCheckoutModal(true)
+    }
+  }
+
+  const onClickApprove = async () => {
+    console.log('approving erc20 ..')
+    try {
+      setPendingApprove(true)
+      await selectedCoinContract.methods.approve(Config.NFT_CONTRACT_ADDRESS, web3.utils.toWei("999999999999999", "ether")).send({from: wallet.address})
+      setPendingApprove(false)
+      setFinishedApprove(true)
+      setNoNeedApprove(true)
+    } catch(e) {
+      setPendingApprove(false)
+    }
+  }
+
+  const onClickConfirmMint = async () => {
+    console.log('confirming mint')
   }
 
   useEffect(() => {
+    console.log('fetchReadOnly from nft contract')
     const fetchReadOnlyStatus = async () => {
       let _maxQuantity = await nftContract.methods.maxPublicQuantity().call()
       let _token1 = await nftContract.methods.PAYMENT_METHODS(0).call()
@@ -129,6 +165,7 @@ export default function Home() {
       let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
       let _totalSupply = await nftContract.methods.totalSupply().call()
 
+      console.log('_token1: ', _token1)
       let _paymentMethods = [
         {
           id: 0,
@@ -144,7 +181,7 @@ export default function Home() {
           title: 'USDT',
           displayPrice: Number(_token1.publicPrice),
           price: Number(_token1.publicPrice) * (10**Number(_token1.decimals)),
-          contract: USDT,
+          contract: new web3.eth.Contract(erc20ABI, (!TEST_MODE ? _token1.token : Config.RINKEBY_TEST_ERC20_TOKEN_ADDRESS)),
         },
         {
           id: 2,
@@ -152,7 +189,7 @@ export default function Home() {
           title: 'USDC',
           displayPrice: Number(_token2.publicPrice),
           price: Number(_token2.publicPrice) * (10**Number(_token2.decimals)),
-          contract: USDC,
+          contract: new web3.eth.Contract(erc20ABI, (!TEST_MODE ? _token2.token : Config.RINKEBY_TEST_ERC20_TOKEN_ADDRESS)),
         },
         {
           id: 3,
@@ -160,7 +197,7 @@ export default function Home() {
           title: 'Shiba',
           displayPrice: Number(_token3.publicPrice),
           price: Number(_token3.publicPrice) * (10**Number(_token3.decimals)),
-          contract: ShibaInu
+          contract: new web3.eth.Contract(erc20ABI, (!TEST_MODE ? _token3.token : Config.RINKEBY_TEST_ERC20_TOKEN_ADDRESS)),
         },
       ]
 
@@ -179,20 +216,17 @@ export default function Home() {
   useEffect(() => {
     console.log('recheck allowance')
     if (!activePaymentMethod()) return
+
     let _unitPrice = activePaymentMethod().displayPrice
     let _price = activePaymentMethod().price
     let _totalPrice = (_unitPrice * quantity).toFixed(2)
+    let _totalPriceWithDecimals = (_price * quantity).toFixed(0)
+
     setUnitPrice(_unitPrice)
     setTotalPrice(_totalPrice)
+    setTotalPriceWithDecimals(_totalPriceWithDecimals)
     setSelectedCoinTitle(activePaymentMethod().title)
-
-    if (selectedCoin === 'eth') {
-      setNoNeedApprove(true)
-    } else {
-      setNoNeedApprove(false)
-    }
-    // check allowance
-
+    setSelectedCoinContract(activePaymentMethod().contract)
   }, [selectedCoin, quantity, wallet.address])
 
   useEffect(() => {
@@ -296,7 +330,6 @@ export default function Home() {
 
       <Modal
         isOpen={showCheckoutModal}
-        onRequestClose={() => setShowCheckoutModal(false)}
         style={ApproveCoinModalStyles(noNeedApprove)}
       >
         <div className="approve-token-modal">
@@ -307,7 +340,7 @@ export default function Home() {
               </h2>
             </div>
 
-            <a className="close" onClick={() => setShowCheckoutModal(false)} >
+            <a className="close" onClick={() => !pendingApprove && setShowCheckoutModal(false)} >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.80241 0.936218L9.11976 0.261684C8.93504 0.0769682 8.62986 0.0769682 8.43711 0.261684L5.03189 3.6668L1.56249 0.197435C1.3777 0.0126389 1.07251 0.0126389 0.879843 0.197435L0.197192 0.88008C0.0123944 1.0648 0.0123944 1.36998 0.197192 1.56273L3.65863 5.02414L0.261441 8.43736C0.0767242 8.62208 0.0767242 8.92726 0.261441 9.12001L0.944092 9.80265C1.12881 9.98737 1.43399 9.98737 1.62674 9.80265L5.03189 6.39746L8.43711 9.80265C8.62182 9.98737 8.92701 9.98737 9.11976 9.80265L9.80241 9.12001C9.98713 8.93529 9.98713 8.63011 9.80241 8.43736L6.38915 5.03217L9.79438 1.62705C9.98713 1.43415 9.98713 1.12896 9.80241 0.936218Z" fill="#FFF"/>
               </svg>
@@ -344,12 +377,31 @@ export default function Home() {
             !noNeedApprove && (
               <div className="approve-token-modal__confirm">
                 <div>Approve your {selectedCoinTitle} to be paid<br/>into CheekyCorgi</div>
-                <button>Approve</button>
+                {
+                  pendingApprove && (
+                    <button className="loader">
+                      <ClipLoader color="#FFF" loading={true} size={16} />
+                    </button>
+                  )
+                }
+                {
+                  !pendingApprove && (
+                    finishedApprove ? (
+                      <button onClick={onClickApprove}>
+                        <img src="/icons/checked.svg" />
+                      </button>
+                    ) : (
+                      <button onClick={onClickApprove}>
+                        Approve
+                      </button>
+                    )
+                  )
+                }
               </div>
             )
           }
 
-          <button className="checkout">MINT</button>
+          <button className="checkout" onClick={onClickConfirmMint}>MINT</button>
         </div>
       </Modal>
     </div>

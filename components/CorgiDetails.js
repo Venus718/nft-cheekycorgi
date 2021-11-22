@@ -1,13 +1,18 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+
 import * as Config from '../data/contract'
 import { toReduced } from '../utils/address'
 
 export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
   const [activeAccordionId, setActiveAccordionId] = useState(-1)
+  const [imageUri, setImageUri] = useState()
+
   const onClickChangeName = (e) => {
     e.preventDefault()
     onChangeRequest(id, true)
   }
+
   const onClickChangeBio = (e) => {
     e.preventDefault()
     onChangeRequest(id, false)
@@ -21,10 +26,26 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
     }
   }
 
+  useEffect(() => {
+    if (!uri) return
+
+    const fetchMetaData = async () => {
+      try {
+        console.log('fetching meta data ...', uri)
+        let {data} = await axios.get(uri)
+        setImageUri(data.image)
+        console.log('image: ', data.image)
+      } catch(e) {
+      }
+    }
+
+    fetchMetaData()
+  }, [uri])
+
   return (
-    <div className="corgi-details">
+    <div className="corgi-details" style={{visibility: id>0 ? 'visible' : 'hidden'}}>
       <div className="image-holder">
-        <img src="/assets/unknown-corgi.png" />
+        <img src={imageUri ?? "/assets/unknown-corgi.png"} />
       </div>
 
       <div className="details-holder">
@@ -41,7 +62,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
           toggleHandler={() => toggleHandler(0)}
         >
           <div>
-            <div>Teddy Bailey</div>
+            <div>{name}</div>
           </div>
         </Accordion>
         <Accordion
@@ -51,7 +72,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
           toggleHandler={() => toggleHandler(1)}
         >
           <div>
-            <div>Bro</div>
+            <div>{bio}</div>
           </div>
         </Accordion>
         <Accordion 
@@ -75,7 +96,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
           </div>
           <div className="d-flex space-between">
             <div>Token ID</div>
-            <div className="text-white">99</div>
+            <div className="text-white">{id}</div>
           </div>
           <div className="d-flex space-between">
             <div>Token Standard</div>

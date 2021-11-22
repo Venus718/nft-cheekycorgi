@@ -49,9 +49,12 @@
   .corgi-holdings {
     margin-top: 1.875rem;
     margin-bottom: 6.25rem;
-    
-    display: flex;
-    justify-content: space-between;
+
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.875rem;
+    }
   }
 }
 

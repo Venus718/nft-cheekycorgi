@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useSelector, useDispatch } from 'react-redux'
 import Modal from 'react-modal'
 import ClipLoader from "react-spinners/ClipLoader"
+import {NotificationManager} from 'react-notifications'
 
 import useContract from '../hooks/useContract'
 import useRefresh from '../hooks/useRefresh'
@@ -102,6 +103,9 @@ export default function Home() {
   const [finishedApprove, setFinishedApprove] = useState(false)
   const [pendingMint, setPendingMint] = useState(false)
 
+  const [mintButtonLabel, setMintButtonLabel] = useState('MINT')
+  const [confirmMintButtonLabel, setConfirmMintButtonLabel] = useState('MINT')
+
   const activePaymentMethod = () => paymentMethods.find(e => e.name === selectedCoin)
 
   const onChangeQuantityInput = (e) => {
@@ -124,10 +128,29 @@ export default function Home() {
 
   const onClickMint = async () => {
     console.log('trying mint')
+    if (quantity === 0) return
 
+    setMintButtonLabel('Minting')
     if (selectedCoin === 'eth') {
-      
+      setPendingMint(true)
+      try {
+        await nftContract.methods.mint(quantity, activePaymentMethod().id).send({from: wallet.address, value: totalPriceWithDecimals})
+        // notification
+        NotificationManager.success('Minting succeeded!')
+        setQuantity(0)
+      } catch(e) {
+        // notification
+        NotificationManager.error('Minting failed!')
+      }
+      setPendingMint(false)
+      setMintButtonLabel('MINT')
     } else {
+      let _tokenBalance = await activePaymentMethod().contract.methods.balanceOf(wallet.address).call()
+      console.log('current balance: ', _tokenBalance, totalPriceWithDecimals)
+      if (Number(_tokenBalance) < totalPriceWithDecimals) {
+        return NotificationManager.error('Insufficient balance!')
+      }
+
       let _approvedAmount = await activePaymentMethod().contract.methods.allowance(wallet.address, Config.NFT_CONTRACT_ADDRESS).call()
       console.log('approved amount: ', _approvedAmount)
       setNoNeedApprove(totalPriceWithDecimals < _approvedAmount)
@@ -135,6 +158,12 @@ export default function Home() {
 
       setShowCheckoutModal(true)
     }
+  }
+
+  const onClickCloseApproveModal = async () => {
+    if (pendingApprove || pendingMint) return
+    setShowCheckoutModal(false)
+    setMintButtonLabel('MINT')
   }
 
   const onClickApprove = async () => {
@@ -152,6 +181,21 @@ export default function Home() {
 
   const onClickConfirmMint = async () => {
     console.log('confirming mint')
+    try {
+      setPendingMint(true)
+      setConfirmMintButtonLabel('Minting')
+      await nftContract.methods.mint(quantity, activePaymentMethod().id).send({from: wallet.address})
+
+      setQuantity(0)
+      onClickCloseApproveModal()
+      // Show notification
+      NotificationManager.success('Minting succeeded!')
+    } catch(e) {
+      console.log('Error occurred while minting...')
+      NotificationManager.error('Minting failed!')
+    }
+    setPendingMint(false)
+    setConfirmMintButtonLabel('MINT')
   }
 
   useEffect(() => {
@@ -308,9 +352,9 @@ export default function Home() {
         </p>
 
         <div className="mint-button-holder">
-          <SubmitButton onClick={onClickMint} disabled={!totalPrice}>MINT</SubmitButton>
+          <SubmitButton onClick={onClickMint} disabled={!totalPrice || pendingMint}>{mintButtonLabel}</SubmitButton>
         </div>
-        
+
         <p className="total-minted">
           Minted Corgi: {totalSupply} / 7700
         </p>
@@ -340,7 +384,7 @@ export default function Home() {
               </h2>
             </div>
 
-            <a className="close" onClick={() => !pendingApprove && setShowCheckoutModal(false)} >
+            <a className="close" onClick={onClickCloseApproveModal} >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.80241 0.936218L9.11976 0.261684C8.93504 0.0769682 8.62986 0.0769682 8.43711 0.261684L5.03189 3.6668L1.56249 0.197435C1.3777 0.0126389 1.07251 0.0126389 0.879843 0.197435L0.197192 0.88008C0.0123944 1.0648 0.0123944 1.36998 0.197192 1.56273L3.65863 5.02414L0.261441 8.43736C0.0767242 8.62208 0.0767242 8.92726 0.261441 9.12001L0.944092 9.80265C1.12881 9.98737 1.43399 9.98737 1.62674 9.80265L5.03189 6.39746L8.43711 9.80265C8.62182 9.98737 8.92701 9.98737 9.11976 9.80265L9.80241 9.12001C9.98713 8.93529 9.98713 8.63011 9.80241 8.43736L6.38915 5.03217L9.79438 1.62705C9.98713 1.43415 9.98713 1.12896 9.80241 0.936218Z" fill="#FFF"/>
               </svg>
@@ -401,7 +445,7 @@ export default function Home() {
             )
           }
 
-          <button className="checkout" onClick={onClickConfirmMint}>MINT</button>
+          <button className="checkout" onClick={onClickConfirmMint} disabled={pendingMint}>{confirmMintButtonLabel}</button>
         </div>
       </Modal>
     </div>

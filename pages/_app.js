@@ -5,7 +5,10 @@ import store from '../redux'
 import MainLayout from '../layouts/MainLayout'
 import { RefreshContextProvider } from '../contexts/RefreshContext'
 
+import 'react-notifications/lib/notifications.css'
 import '../styles/main.scss'
+
+import {NotificationContainer, NotificationManager} from 'react-notifications'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,6 +23,7 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </MainLayout>
         </RefreshContextProvider>
+        <NotificationContainer/>
       </Provider>
     </>
   )

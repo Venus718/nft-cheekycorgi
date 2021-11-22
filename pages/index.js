@@ -15,11 +15,6 @@ import { toReduced } from '../utils/address'
 import * as Config from '../data/contract'
 import erc20ABI from "../data/erc20.json"
 
-/**
- *  [danger] remove the below in the live net deployment, update all included lines
- */
-const TEST_MODE = 1
-
 const CoinSelectionModalStyles = {
   content: {
     width: '19rem',
@@ -139,6 +134,7 @@ export default function Home() {
         NotificationManager.success('Minting succeeded!')
         setQuantity(0)
       } catch(e) {
+        console.log('error while minting: ', e)
         // notification
         NotificationManager.error('Minting failed!')
       }
@@ -210,6 +206,7 @@ export default function Home() {
       let _totalSupply = await nftContract.methods.totalSupply().call()
 
       console.log('_token1: ', _token1)
+
       let _paymentMethods = [
         {
           id: 0,
@@ -225,7 +222,7 @@ export default function Home() {
           title: 'USDT',
           displayPrice: Number(_token1.publicPrice),
           price: Number(_token1.publicPrice) * (10**Number(_token1.decimals)),
-          contract: new web3.eth.Contract(erc20ABI, (!TEST_MODE ? _token1.token : Config.RINKEBY_TEST_ERC20_TOKEN_ADDRESS)),
+          contract: new web3.eth.Contract(erc20ABI, _token1.token),
         },
         {
           id: 2,
@@ -233,7 +230,7 @@ export default function Home() {
           title: 'USDC',
           displayPrice: Number(_token2.publicPrice),
           price: Number(_token2.publicPrice) * (10**Number(_token2.decimals)),
-          contract: new web3.eth.Contract(erc20ABI, (!TEST_MODE ? _token2.token : Config.RINKEBY_TEST_ERC20_TOKEN_ADDRESS)),
+          contract: new web3.eth.Contract(erc20ABI, _token2.token),
         },
         {
           id: 3,
@@ -241,7 +238,7 @@ export default function Home() {
           title: 'Shiba',
           displayPrice: Number(_token3.publicPrice),
           price: Number(_token3.publicPrice) * (10**Number(_token3.decimals)),
-          contract: new web3.eth.Contract(erc20ABI, (!TEST_MODE ? _token3.token : Config.RINKEBY_TEST_ERC20_TOKEN_ADDRESS)),
+          contract: new web3.eth.Contract(erc20ABI, _token3.token),
         },
       ]
 
@@ -277,8 +274,10 @@ export default function Home() {
     const fetchTotalSupply = async () => {
       let _totalSupply = await nftContract.methods.totalSupply().call()
       setTotalSupply(_totalSupply)
+      let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
+      setBalanceOf(_balanceOf)
 
-      console.log('Total Supply: ', _totalSupply)
+      console.log('Total Supply: ', _totalSupply, _balanceOf)
     }
 
     if (nftContract) {
@@ -445,7 +444,7 @@ export default function Home() {
             )
           }
 
-          <button className="checkout" onClick={onClickConfirmMint} disabled={pendingMint}>{confirmMintButtonLabel}</button>
+          <button className="checkout" onClick={onClickConfirmMint} disabled={pendingMint || pendingApprove || !noNeedApprove}>{confirmMintButtonLabel}</button>
         </div>
       </Modal>
     </div>

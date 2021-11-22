@@ -1,9 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useSelector, useDispatch } from 'react-redux'
+import {NotificationManager} from 'react-notifications'
+
 import SubmitButton from '../components/SubmitButton'
 import CorgiDetails from '../components/CorgiDetails'
 import Modal from 'react-modal'
+
+import useContract from '../hooks/useContract'
 
 const ChangeFieldModalStyles = {
   content: {
@@ -19,6 +24,19 @@ const ChangeFieldModalStyles = {
 }
 
 export default function MyCorgis() {
+  const wallet = useSelector(state => state.wallet)
+  const [
+    web3, 
+    nftContract, 
+    yieldContract
+  ] = useContract()
+
+  const [balanceOfYieldToken, setBalanceOfYieldToken] = useState(0)
+  const [claimableBalanceOfYieldToken, setClaimableBalanceOfYieldToken] = useState(0)
+  const [pendingClaiming, setPendingClaiming] = useState(false)
+
+  const [balanceOfNft, setBalanceOfNft] = useState(0)
+
   const [showChangeNameModal, setShowChangeNameModal] = useState(false)
   const [showChangeBioModal, setShowChangeBioModal] = useState(false)
 
@@ -35,6 +53,46 @@ export default function MyCorgis() {
     }
   }
 
+  const fetchYieldRewards = async () => {
+    const _balanceOfYield = await yieldContract.methods.balanceOf(wallet.address).call()
+    const _claimableBalanceOfYield = await yieldContract.methods.getTotalClaimable(wallet.address).call()
+    console.log('balanceOfYield: ', _balanceOfYield)
+    console.log('claimableBalanceOfYield: ', _claimableBalanceOfYield)
+
+    setBalanceOfYieldToken(Number(_balanceOfYield))
+    setClaimableBalanceOfYieldToken(Number(_claimableBalanceOfYield))
+  }
+
+  const claimYieldRewards = async () => {
+    setPendingClaiming(true)
+    try {
+      await nftContract.methods.getReward().send({from: wallet.address})
+      NotificationManager.success('Claiming rewards succeeded!')
+      await fetchYieldRewards()
+    } catch(e) {
+      NotificationManager.error('Claiming rewards failed!')
+    }
+    setPendingClaiming(false)
+  }
+
+  const fetchNftBalances = async () => {
+    const _balanceOfNft = await nftContract.methods.balanceOf(wallet.address).call()
+    console.log('nft balance: ', _balanceOfNft)
+    setBalanceOfNft(Number(_balanceOfNft))
+  }
+
+  useEffect(() => {
+    if (!yieldContract) return
+
+    fetchYieldRewards()
+  }, [yieldContract])
+
+  useEffect(() => {
+    if (!nftContract) return
+
+    fetchNftBalances()
+  }, [nftContract])
+
   return (
     <div className="my-corgis">
       <Head>
@@ -45,24 +103,34 @@ export default function MyCorgis() {
         <div className="sploot-balance">
           <img src="/icons/sploot.svg" />
           <div className="balance-numbers">
-            <p>Balance: <span className="text-white">XX</span></p>
-            <p>Pending: <span className="text-white">XX</span></p>
+            <p>Balance: <span className="text-white">{balanceOfYieldToken}</span></p>
+            <p>Pending: <span className="text-white">{claimableBalanceOfYieldToken}</span></p>
           </div>
         </div>
 
-        <SubmitButton>CLAIM SPLOOT</SubmitButton>
+        <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
+          { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}
+        </SubmitButton>
       </div>
 
-      <div className="not-found-corgi">
-        <h3>No corgi found</h3>
-        <p>Eget nullam pellentesque cras tellus eu sit amet. Vel velit ut condimentum sit pretium <br/>ultrices tortor convallis. Tempus enim gravida elit magna erat viverra.</p>
-      </div>
+      {
+        !balanceOfNft && (
+          <div className="not-found-corgi">
+            <h3>No corgi found</h3>
+            <p>Eget nullam pellentesque cras tellus eu sit amet. Vel velit ut condimentum sit pretium <br/>ultrices tortor convallis. Tempus enim gravida elit magna erat viverra.</p>
+          </div>
+        )
+      }
 
-      <div className="corgi-holdings">
-        <CorgiDetails id={10} onChangeRequest={onChangeRequestModal} />
-        <CorgiDetails id={19} onChangeRequest={onChangeRequestModal} />
-        <CorgiDetails id={14} onChangeRequest={onChangeRequestModal} />
-      </div>
+      {
+        balanceOfNft > 0 && (
+          <div className="corgi-holdings">
+            <CorgiDetails id={10} onChangeRequest={onChangeRequestModal} />
+            <CorgiDetails id={19} onChangeRequest={onChangeRequestModal} />
+            <CorgiDetails id={14} onChangeRequest={onChangeRequestModal} />
+          </div>
+        )
+      }
 
       <Modal
         isOpen={showChangeNameModal}

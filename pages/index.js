@@ -144,6 +144,7 @@ export default function Home() {
       let _tokenBalance = await activePaymentMethod().contract.methods.balanceOf(wallet.address).call()
       console.log('current balance: ', _tokenBalance, totalPriceWithDecimals)
       if (Number(_tokenBalance) < totalPriceWithDecimals) {
+        setMintButtonLabel('MINT')
         return NotificationManager.error('Insufficient balance!')
       }
 

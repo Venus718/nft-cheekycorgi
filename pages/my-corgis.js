@@ -33,6 +33,7 @@ export default function MyCorgis() {
   ] = useContract()
 
   const [loading, setLoading] = useState(true)
+  const [pendingUpdate, setPendingUpdate] = useState(false)
 
   const [balanceOfYieldToken, setBalanceOfYieldToken] = useState(0)
   const [claimableBalanceOfYieldToken, setClaimableBalanceOfYieldToken] = useState(0)
@@ -58,6 +59,9 @@ export default function MyCorgis() {
     } else {
       setShowChangeBioModal(true)
     }
+
+    setNameInput(ownedTokenNames[tokenId])
+    setBioInput(ownedTokenBios[tokenId])
   }
 
   const fetchYieldRewards = async () => {
@@ -125,6 +129,24 @@ export default function MyCorgis() {
     console.log('bios: ', _tokenBios)
     console.log('uris: ', _tokenUris)
     setLoading(false)
+  }
+
+  const onClickSubmitName = async () => {
+    console.log('active token: ', activeTokenId, nameInput)
+    if (!nameInput.length) return
+
+    try {
+      setPendingUpdate(true)
+      await nftContract.methods.changeName(activeTokenId, nameInput).send({from: wallet.address})
+      NotificationManager.success('Changing name succeeded!')
+    } catch(e) {
+      NotificationManager.error('Changing name failed!')
+    }
+    setPendingUpdate(false)
+  }
+
+  const onClickSubmitBio = () => {
+    console.log('active bio: ', activeTokenId, bioInput)
   }
 
   useEffect(() => {
@@ -202,29 +224,41 @@ export default function MyCorgis() {
 
       <Modal
         isOpen={showChangeNameModal}
-        onRequestClose={() => setShowChangeNameModal(false)}
+        onRequestClose={() => !pendingUpdate && setShowChangeNameModal(false)}
         style={ChangeFieldModalStyles}
       >
         <div className="change-corgi-modal">
           <h3 className="change-value-title">Change Name</h3>
           <input type="text" id="name" className="corgi-value" value={nameInput} onChange={(e) => setNameInput(e.target.value)} placeholder="Type Name..." />
-          <button className="submit-corgi-change">Change Name</button>
+          <button 
+            className="submit-corgi-change"
+            onClick={onClickSubmitName}
+            disabled={pendingUpdate}
+          >
+            {pendingUpdate? 'Changing' : 'Change Name'}
+          </button>
           <p className="change-corgi-fee">Fee 150 Sploot</p>
-          <a className="close" onClick={(e) => setShowChangeNameModal(false)} ><img src="/icons/times.svg" /></a>
+          <a className="close" onClick={(e) => !pendingUpdate && setShowChangeNameModal(false)} ><img src="/icons/times.svg" /></a>
         </div>
       </Modal>
 
       <Modal
         isOpen={showChangeBioModal}
-        onRequestClose={() => setShowChangeBioModal(false)}
+        onRequestClose={() => !pendingUpdate && setShowChangeBioModal(false)}
         style={ChangeFieldModalStyles}
       >
         <div className="change-corgi-modal">
           <h3 className="change-value-title">Change Bio</h3>
           <input type="text" id="bio" className="corgi-value" value={bioInput} onChange={(e) => setBioInput(e.target.value)} placeholder="Type Bio..." />
-          <button className="submit-corgi-change">Change Bio</button>
+          <button 
+            className="submit-corgi-change"
+            onClick={onClickSubmitBio}
+            disabled={pendingUpdate}
+          >
+            {pendingUpdate? 'Changing' : 'Change Bio'}
+          </button>
           <p className="change-corgi-fee">Fee 150 Sploot</p>
-          <a className="close" onClick={(e) => setShowChangeBioModal(false)} ><img src="/icons/times.svg" /></a>
+          <a className="close" onClick={(e) => !pendingUpdate && setShowChangeBioModal(false)} ><img src="/icons/times.svg" /></a>
         </div>
       </Modal>
     </div>

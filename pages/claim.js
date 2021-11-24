@@ -147,7 +147,7 @@ export default function Claim() {
         </p>
 
         <div className="mint-button-holder">
-          <SubmitButton onClick={onClickClaim} disabled={claimed}>
+          <SubmitButton onClick={onClickClaim} disabled={claimed || !totalClaimableNftCounts}>
             {
               claimed ? 
               'Claimed Already' : 

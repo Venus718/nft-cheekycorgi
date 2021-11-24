@@ -207,6 +207,8 @@ export default function Home() {
       let _totalSupply = await nftContract.methods.totalSupply().call()
 
       console.log('_token1: ', _token1)
+      console.log('_token2: ', _token2)
+      console.log('_token3: ', _token3)
 
       let _paymentMethods = [
         {
@@ -221,24 +223,24 @@ export default function Home() {
           id: 1,
           name: 'usdt',
           title: 'USDT',
-          displayPrice: Number(_token1.publicPrice),
-          price: Number(_token1.publicPrice) * (10**Number(_token1.decimals)),
+          displayPrice: Number(_token1.publicPrice) / (10**Number(_token1.decimals)),
+          price: Number(_token1.publicPrice),
           contract: new web3.eth.Contract(erc20ABI, _token1.token),
         },
         {
           id: 2,
           name: 'usdc',
           title: 'USDC',
-          displayPrice: Number(_token2.publicPrice),
-          price: Number(_token2.publicPrice) * (10**Number(_token2.decimals)),
+          displayPrice: Number(_token2.publicPrice) / (10**Number(_token2.decimals)),
+          price: Number(_token2.publicPrice),
           contract: new web3.eth.Contract(erc20ABI, _token2.token),
         },
         {
           id: 3,
           name: 'shiba',
           title: 'Shiba',
-          displayPrice: Number(_token3.publicPrice),
-          price: Number(_token3.publicPrice) * (10**Number(_token3.decimals)),
+          displayPrice: Number(_token3.publicPrice)  / (10**Number(_token3.decimals)),
+          price: Number(_token3.publicPrice),
           contract: new web3.eth.Contract(erc20ABI, _token3.token),
         },
       ]

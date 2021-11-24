@@ -6,8 +6,8 @@ export const ACTIVE_NETWORK_ID = 4
 // ==========================================================================================
 
 // below is contract address in rinkeby
-export const NFT_CONTRACT_ADDRESS = '0x2fcc8D023B5f98BbEc41753A7bF42EcA4fA06126'
-export const YIELD_TOKEN_CONTRACT_ADDRESS = '0xb1b5748EcEd024dff9C771D692b2D22CA4B0a865'
+export const NFT_CONTRACT_ADDRESS = '0xe27545d9a49b4920Cd9B17945F42aa38fAf2cC05'
+export const YIELD_TOKEN_CONTRACT_ADDRESS = '0x20A19e383103af68826656A66086e349F2A8F746'
 
 // don't change the order, keep it same with Smart Contract
 export const FRIENDSHIP_NFT_ADDRESSES = ['0xC675Fb458a155C1af6F373057Dde1DD00cdd3494',

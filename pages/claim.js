@@ -22,6 +22,7 @@ export default function Claim() {
   const [totalClaimed, setTotalClaimed] = useState(0)
   const [maxClaimable, setMaxClaimable] = useState(300)
   const [claimed, setClaimed] = useState(false)
+  const [pendingClaim, setPendingClaim] = useState(false)
   const [claimableNftContracts, setClaimableNftContracts] = useState([])
   const [totalClaimableNftCounts, setTotalClaimableNftCounts] = useState(0)
 
@@ -34,8 +35,11 @@ export default function Claim() {
     }
     console.log('claiming cheekycorgi ...')
 
+    setPendingClaim(true)
     try {
-      claimableNftContracts.forEach(async (_collection, _collectionId) => {
+      for(let _collectionId = 0; _collectionId < claimableNftContracts.length; _collectionId ++) {
+        let _collection = claimableNftContracts[_collectionId]
+
         if (_collection.balanceOf > 0) {
           for (let _index = 0; _index < _collection.balanceOf; _index ++) {
             let _tokenId = await _collection.contract.methods.tokenOfOwnerByIndex(wallet.address, _index).call()
@@ -43,15 +47,18 @@ export default function Claim() {
             if (!_isClaimedAlready) {
               await nftContract.methods.claim(_collection.address, _tokenId).send({from: wallet.address})
               setClaimed(true)
+              setPendingClaim(false)
               return NotificationManager.success('Successfully claimed!')
             }
           }
         }
-      })
-      return NotificationManager.success('Sorry, but you can not claim CheekyCorgi!')
+      }
     } catch(e) {
+      setPendingClaim(false)
       return NotificationManager.error('Claiming failed unexpectedly!')
     }
+    setPendingClaim(false)
+    return NotificationManager.success('Sorry, but you can not claim CheekyCorgi!')
   }
 
   useEffect(() => {
@@ -71,7 +78,7 @@ export default function Claim() {
       console.log('max claimable: ', _maxClaimable)
 
       let _claimableNftContracts = [], _totalBalance = 0
-      FRIENDSHIP_NFT_ADDRESSES.forEach(async (_contractAddress) => {
+      for (let _contractAddress of FRIENDSHIP_NFT_ADDRESSES) {
         let _contract = new web3.eth.Contract(erc721EnumerableABI, _contractAddress)
         let _balanceOf = await _contract.methods.balanceOf(wallet.address).call()
         _totalBalance += Number(_balanceOf)
@@ -81,7 +88,7 @@ export default function Claim() {
           contract: _contract,
           balanceOf: Number(_balanceOf)
         })
-      })
+      }
 
       setClaimableNftContracts(_claimableNftContracts)
       setTotalClaimableNftCounts(_totalBalance)
@@ -107,10 +114,11 @@ export default function Claim() {
       console.log('total claimed: ', _totalClaimed)
   
       let _totalBalance = 0
-      claimableNftContracts.forEach(async (_collection) => {
+      for (let _collection of claimableNftContracts) {
         let _balanceOf = await _collection.contract.methods.balanceOf(wallet.address).call()
+        console.log('fetching balanceOf: ', _collection.address, _balanceOf)
         _totalBalance += Number(_balanceOf)
-      })
+      }
       console.log('claimable nft balance: ', _totalBalance)
       setTotalClaimableNftCounts(_totalBalance)
     }
@@ -143,7 +151,9 @@ export default function Claim() {
             {
               claimed ? 
               'Claimed Already' : 
-              'CLAIM FOR FREE (EXCLUDE GAS)'
+              (
+                pendingClaim ? 'Claiming' : 'CLAIM FOR FREE (EXCLUDE GAS)'
+              )
             }
           </SubmitButton>
         </div>

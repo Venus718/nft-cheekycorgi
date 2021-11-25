@@ -35,21 +35,21 @@ const PaymentMethod = ({label, icon, active, onClick}) => {
   }
 
   return (
-    <div className="payment-item">
-      <a
-        href="#" 
-        className={`payment-item__info ${active ? 'active' : ''}`}
-        onClick={onClickHandler}
-      >
+    <a 
+      href="#" 
+      className={`payment-item ${active ? 'active' : ''}`}
+      onClick={onClickHandler}
+    >
+      <span className="payment-item__info">
         <img src={icon} />
         <span>{label}</span>
-      </a>
+      </span>
       <div className="payment-item__checked">
       {
         active && <img src="/icons/coin-selected.svg" />
       }
       </div>
-    </div>
+    </a>
   )
 }
 

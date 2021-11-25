@@ -133,16 +133,16 @@ h3.payment-selection-title {
   align-items: center;
   justify-content: space-between;
   margin: .9375rem 0;
+  opacity: 0.5;
+
+  &:hover, &.active {
+    opacity: 1;
+  }
 
   &__info {
     display: flex;
     align-items: center;
     cursor: pointer;
-    opacity: 0.5;
-
-    &:hover, &.active {
-      opacity: 1;
-    }
 
     img {
       margin-right: .6875rem;

@@ -38,6 +38,9 @@ export default function ConnectWallet() {
   const onClickConnect = async () => {
     if (onboard) {
       const walletSelected = await onboard.walletSelect()
+      if (!walletSelected) return
+
+      console.log('wallet selected: ', walletSelected)
       const readyToTransact = await onboard.walletCheck()
       console.log('Wallet selected: ', walletSelected, ' Ready to transact: ', readyToTransact)
       if (walletSelected && readyToTransact) {

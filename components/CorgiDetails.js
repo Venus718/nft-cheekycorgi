@@ -43,7 +43,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
   }, [uri])
 
   return (
-    <div className="corgi-details" style={{visibility: id>0 ? 'visible' : 'hidden'}}>
+    <div className={`corgi-details ${id <= 0 ? 'hidden' : ''}`}>
       <div className="image-holder">
         <img src={imageUri ?? "/assets/unknown-corgi.png"} />
       </div>

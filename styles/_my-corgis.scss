@@ -9,6 +9,10 @@
     font-family: Attendance, sans-serif;
     color: $color1;
     margin: 4.375rem 0 2.8125rem 0;
+
+    @media (max-width: 576px) {
+      text-align: center;
+    }
   }
 
   .sploot-balance-section {
@@ -18,8 +22,21 @@
     justify-content: space-between;
     align-items: center;
 
+    @media (min-width: 576px) {
+      .sploot-balance__claim-button1 {
+        display: none;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .sploot-balance__claim-button2 {
+        display: none;
+      }
+    }
+
     .sploot-balance {
       display: flex;
+      align-items: center;
 
       .balance-numbers{
         margin-left: 1.625rem;
@@ -54,6 +71,7 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 1.875rem;
+      flex-wrap: wrap;
     }
   }
 }

@@ -11,6 +11,10 @@
     border-radius: 1.625rem;
     text-align: center;
 
+    @media (max-width: 576px) {
+      padding: 2.5rem 2.25rem;
+    }
+
     h1 {
       font-size: 2.8125rem;
       font-family: Attendance, sans-serif;
@@ -41,43 +45,6 @@
     p.hold-info {
       margin-bottom: 2.125rem;
       color: $color7;
-    }
-
-    .checkout-inputs{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .quantity-wrapper{
-        width: 25rem;
-        position: relative;
-
-        .quantity-label {
-          border: none;
-          border-radius: 999px;
-          font-weight: 700;
-          font-size: .875rem;
-          padding: .5rem 1.375rem;
-          position: absolute;
-          top: .5rem;
-          left: .5rem;
-          background-color: $bgnd2;
-          color: $color8;
-        }
-  
-        .quantity-input {
-          background-color: $bgnd4;
-          color: $color6;
-          font-size: 1rem;
-          font-weight: 700;
-          line-height: 1.375rem;
-          border: none;
-          border-radius: 99px;
-          outline: none;
-          padding: 0.9375rem 2.75rem 0.9375rem 9rem;
-          width: 100%;
-        }
-      }
     }
 
     .mint-button-holder {

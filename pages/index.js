@@ -18,7 +18,7 @@ import erc20ABI from "../data/erc20.json"
 const CoinSelectionModalStyles = {
   content: {
     width: '19rem',
-    height: '17.5rem',
+    height: '19rem',
     margin: '0 auto',
     top: '30%',
     borderRadius: '1.25rem',
@@ -328,7 +328,7 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="selected">
-                  <img src={`/icons/coin-${selectedCoin}.svg`} />&nbsp;&nbsp;
+                  <img src={`/icons/coin-${selectedCoin}.svg`} style={{width: '2rem'}} />&nbsp;&nbsp;
                   {selectedCoin.toUpperCase()}&nbsp;&nbsp;
                   <img src="/icons/down.svg" alt="down" />
                 </div>

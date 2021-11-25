@@ -173,12 +173,19 @@ export default function MyCorgis() {
           <div className="balance-numbers">
             <p>Balance: <span className="text-white">{balanceOfYieldToken}</span></p>
             <p>Pending: <span className="text-white">{claimableBalanceOfYieldToken}</span></p>
+            <div className="sploot-balance__claim-button1" style={{marginBottom: '.9375rem'}}>
+              <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
+                { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}
+              </SubmitButton>
+            </div>
           </div>
         </div>
 
-        <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
-          { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}
-        </SubmitButton>
+        <div className="sploot-balance__claim-button2">
+          <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
+            { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}
+          </SubmitButton>
+        </div>
       </div>
       {
         loading && (

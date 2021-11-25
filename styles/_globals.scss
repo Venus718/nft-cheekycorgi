@@ -6,6 +6,10 @@ body {
   font-size: 16px;
   background-color: $bgnd1;
   color: $color2;
+
+  @media (max-width: 576px) {
+    font-size: 12px;
+  }
 }
 
 a {
@@ -94,6 +98,22 @@ input[type=number] {
   align-items: center;
   padding: .75rem 4rem .75rem 2rem;
 
+  @media (max-width: 768px) {
+    padding: .75rem 1.5rem;
+  }
+
+  .toggle-navbar {
+    padding: .125rem .5rem;
+    background-color: transparent;
+    border: 1px solid $color2;
+    border-radius: .25rem;
+    cursor: pointer;
+
+    @media (min-width: 960px) {
+      display: none;
+    }
+  }
+
   ul {
     display: flex;
     align-items: center;
@@ -106,6 +126,10 @@ input[type=number] {
   .right-nav {
     display: flex;
     align-items: center;
+
+    @media (max-width: 960px) {
+      display: none;
+    }
   }
 
   .main-pages {
@@ -123,6 +147,10 @@ input[type=number] {
   .socials {
     margin-left: 4rem;
 
+    @media (max-width: 1024px) {
+      margin-left: .5rem;
+    }
+
     ul {
       li {
         margin: 0 .75rem;
@@ -136,13 +164,43 @@ input[type=number] {
   }
 }
 
+.nav-modal {
+  &__item {
+    padding: .5rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $color5;
+    }
+  }
+
+  &__social {
+    margin-top: 1rem;
+    padding: .75rem;
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
 
 .main-footer {
   background-color: $bgnd3;
   padding: 2.875rem 15.25rem;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  @media (max-width: 1280px) {
+    padding: 2.875rem 2rem;
+  }
+
+  @media (max-width: 960px) {
+    flex-direction: column;
+  }
 
   .smart-contract {
     color: $color1;
@@ -152,6 +210,9 @@ input[type=number] {
 
   .copyright {
     color: $color8;
+    @media (max-width: 960px) {
+      margin: 1.5rem 0;
+    }
   }
 
   .socials {
@@ -182,6 +243,7 @@ input[type=number] {
   justify-content: center;
   align-items: center;
   height: 50vh;
+  text-align: center;
 
   h1 {
     font-size: 2.8125rem;
@@ -215,6 +277,17 @@ input[type=number] {
 
 .corgi-details {
   max-width: 21.875rem;
+
+  &.hidden {
+    visibility: hidden;  
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    margin: .75rem auto;
+  }
 
   .image-holder {
     background-image: url('/assets/corgi-image-holder-bgnd.svg');

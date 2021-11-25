@@ -17,10 +17,15 @@
   .sploot-everything {
     margin: 7.5rem 15rem;
     display: flex;
+    flex-direction: row;
     justify-content: space-around;
 
     @media (max-width: 1280px) {
       margin: 7.5rem 5%;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
     }
 
     .sploot-explanation {
@@ -64,6 +69,7 @@
         position: relative;
         max-width: 27.75rem;
         padding: 2.125rem 2rem;
+        margin-bottom: 1rem;
         line-height: 1.6875rem;
         text-align: center;
         color: $color7;

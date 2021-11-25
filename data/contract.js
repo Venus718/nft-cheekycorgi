@@ -19,3 +19,8 @@ export const ETH_SCAN_URL = {
   1: 'https://etherscan.io',
   4: 'https://rinkeby.etherscan.io'
 }
+
+export const OPENSEA_URL = {
+  1: 'https://opensea.io',
+  4: 'https://testnets.opensea.io'
+}

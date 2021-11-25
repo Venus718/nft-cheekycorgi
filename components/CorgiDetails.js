@@ -52,7 +52,13 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
         <div className="buttons-row">
           <button onClick={onClickChangeName}>Change Name</button>
           <button onClick={onClickChangeBio}>Change Bio</button>
-          <button>Link to Opensea</button>
+          <button>
+            <a
+              href={Config.OPENSEA_URL[Config.ACTIVE_NETWORK_ID] + '/assets/' + Config.NFT_CONTRACT_ADDRESS + '/' + id}
+              target="_blank"
+              rel="noreferrer"
+            >Link to Opensea</a>
+          </button>
         </div>
 
         <Accordion 

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useSelector, useDispatch } from 'react-redux'
 import {NotificationManager} from 'react-notifications'
 import chunk from 'lodash.chunk'
+import clonedeep from 'lodash.clonedeep'
 
 import SubmitButton from '../components/SubmitButton'
 import CorgiDetails from '../components/CorgiDetails'
@@ -36,6 +37,8 @@ export default function MyCorgis() {
   const [pendingUpdate, setPendingUpdate] = useState(false)
 
   const [decimalsOfYieldToken, setDecimalsOfYieldToken] = useState(18)
+  const [nameChangePrice, setNameChangePrice] = useState(0)
+  const [bioChangePrice, setBioChangePrice] = useState(0)
   const [balanceOfYieldToken, setBalanceOfYieldToken] = useState(0)
   const [claimableBalanceOfYieldToken, setClaimableBalanceOfYieldToken] = useState(0)
   const [pendingClaiming, setPendingClaiming] = useState(false)
@@ -50,8 +53,8 @@ export default function MyCorgis() {
   const [showChangeBioModal, setShowChangeBioModal] = useState(false)
 
   const [activeTokenId, setActiveTokenId] = useState()
-  const [nameInput, setNameInput] = useState()
-  const [bioInput, setBioInput] = useState()
+  const [nameInput, setNameInput] = useState('')
+  const [bioInput, setBioInput] = useState('')
 
   const onChangeRequestModal = (tokenId, isName) => {
     setActiveTokenId(tokenId)
@@ -94,6 +97,14 @@ export default function MyCorgis() {
   }
 
   const fetchNftBalances = async () => {
+    const _nameChangePrice = await nftContract.methods.NAME_CHANGE_PRICE().call()
+    console.log('name change price: ', _nameChangePrice)
+    setNameChangePrice(Number(_nameChangePrice))
+
+    const _bioChangePrice = await nftContract.methods.BIO_CHANGE_PRICE().call()
+    console.log('bio change price: ', _bioChangePrice)
+    setBioChangePrice(Number(_bioChangePrice))
+
     const _balanceOfNft = await nftContract.methods.balanceOf(wallet.address).call()
     console.log('nft balance: ', _balanceOfNft)
     setBalanceOfNft(Number(_balanceOfNft))
@@ -140,20 +151,56 @@ export default function MyCorgis() {
 
   const onClickSubmitName = async () => {
     console.log('active token: ', activeTokenId, nameInput)
-    if (!nameInput.length) return
+    const _nameInput = nameInput.trim()
+    if (!_nameInput.length || _nameInput.length > 32) {
+      return NotificationManager.info('Invalid name!')
+    }
+
+    if (nameChangePrice > balanceOfYieldToken) {
+      return NotificationManager.info('Insufficient balance!')
+    }
 
     try {
       setPendingUpdate(true)
-      await nftContract.methods.changeName(activeTokenId, nameInput).send({from: wallet.address})
+      await nftContract.methods.changeName(activeTokenId, _nameInput).send({from: wallet.address})
+
+      // update current status
+      const _tokenNames = clonedeep(ownedTokenNames)
+      _tokenNames[activeTokenId] = _nameInput
+      setOwnedTokenNames(_tokenNames)
       NotificationManager.success('Changing name succeeded!')
+      setShowChangeNameModal(false)
     } catch(e) {
       NotificationManager.error('Changing name failed!')
     }
     setPendingUpdate(false)
   }
 
-  const onClickSubmitBio = () => {
+  const onClickSubmitBio = async () => {
     console.log('active bio: ', activeTokenId, bioInput)
+    const _bioInput = bioInput.trim()
+    if (!_bioInput.length || _bioInput.length > 32) {
+      return NotificationManager.info('Invalid bio!')
+    }
+
+    if (bioChangePrice > balanceOfYieldToken) {
+      return NotificationManager.info('Insufficient balance!')
+    }
+
+    try {
+      setPendingUpdate(true)
+      await nftContract.methods.changeBio(activeTokenId, _bioInput).send({from: wallet.address})
+
+      // update current status
+      const _tokenBios = clonedeep(ownedTokenBios)
+      _tokenBios[activeTokenId] = _bioInput
+      setOwnedTokenBios(_tokenBios)
+      NotificationManager.success('Changing bio succeeded!')
+      setShowChangeBioModal(false)
+    } catch(e) {
+      NotificationManager.error('Changing bio failed!')
+    }
+    setPendingUpdate(false)
   }
 
   useEffect(() => {

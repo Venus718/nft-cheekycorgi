@@ -35,6 +35,7 @@ export default function MyCorgis() {
   const [loading, setLoading] = useState(true)
   const [pendingUpdate, setPendingUpdate] = useState(false)
 
+  const [decimalsOfYieldToken, setDecimalsOfYieldToken] = useState(18)
   const [balanceOfYieldToken, setBalanceOfYieldToken] = useState(0)
   const [claimableBalanceOfYieldToken, setClaimableBalanceOfYieldToken] = useState(0)
   const [pendingClaiming, setPendingClaiming] = useState(false)
@@ -62,6 +63,12 @@ export default function MyCorgis() {
 
     setNameInput(ownedTokenNames[tokenId])
     setBioInput(ownedTokenBios[tokenId])
+  }
+
+  const fetchDecimalsOfYieldToken = async () => {
+    const _decimals = await yieldContract.methods.decimals().call()
+    console.log('decimals: ', _decimals)
+    setDecimalsOfYieldToken(Number(_decimals))
   }
 
   const fetchYieldRewards = async () => {
@@ -152,6 +159,7 @@ export default function MyCorgis() {
   useEffect(() => {
     if (!yieldContract) return
 
+    fetchDecimalsOfYieldToken()
     fetchYieldRewards()
   }, [yieldContract])
 
@@ -171,8 +179,8 @@ export default function MyCorgis() {
         <div className="sploot-balance">
           <img src="/icons/sploot.svg" />
           <div className="balance-numbers">
-            <p>Balance: <span className="text-white">{balanceOfYieldToken}</span></p>
-            <p>Pending: <span className="text-white">{claimableBalanceOfYieldToken}</span></p>
+            <p>Balance: <span className="text-white">{(balanceOfYieldToken / 10**decimalsOfYieldToken).toFixed(2)}</span></p>
+            <p>Pending: <span className="text-white">{(claimableBalanceOfYieldToken  / 10**decimalsOfYieldToken).toFixed(2)}</span></p>
             <div className="sploot-balance__claim-button1" style={{marginBottom: '.9375rem'}}>
               <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
                 { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}

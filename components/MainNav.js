@@ -33,9 +33,9 @@ export default function MainNav() {
 
   return (
     <nav className="main-nav">
-      <Link href="/">
+      <a href="https://cheekycorgi.com">
         <img src="/assets/logo.svg" alt="Cheeky Corgi" />
-      </Link>
+      </a>
       
       <button className="toggle-navbar" onClick={onShowNavModal}>
         <img 
@@ -47,8 +47,13 @@ export default function MainNav() {
         <div className="main-pages">
           <ul>
             <li className={router.pathname == '/' ? 'active' : ''}>
-              <Link href="/">
+              <a href="https://cheekycorgi.com">
                 Home
+              </a>
+            </li>
+            <li className={router.pathname == '/mint' ? 'active' : ''}>
+              <Link href="/mint">
+                Mint
               </Link>
             </li>
             <li className={router.pathname == '/claim' ? 'active' : ''}>
@@ -57,19 +62,24 @@ export default function MainNav() {
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <a href="https://cheekycorgi.com/og-corgis">
                 OG Corgis
-              </Link>
+              </a>
             </li>
             <li className={router.pathname == '/my-corgis' ? 'active' : ''}>
               <Link href="/my-corgis">
                 My Corgis
               </Link>
             </li>
-            <li className={router.pathname == '/faq' ? 'active' : ''}>
-              <Link href="/faq">
-                FAQ
+            <li className={router.pathname == '/sploot' ? 'active' : ''}>
+              <Link href="/sploot">
+                Sploot
               </Link>
+            </li>
+            <li>
+              <a href="https://mintology.gitbook.io/untitled/" target="_blank" rel="noreferrer">
+                FAQ
+              </a>
             </li>
           </ul>
         </div>
@@ -128,7 +138,7 @@ export default function MainNav() {
           </div>
           <div className="nav-modal__item">
             <Link href="/faq">
-              <a href="#" onClick={beforeNavigate}>FAQ</a>
+              <a href="#" onClick={beforeNavigate}>Sploot</a>
             </Link>
           </div>
 

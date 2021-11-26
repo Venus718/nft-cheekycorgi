@@ -33,7 +33,7 @@ export default function MainNav() {
 
   return (
     <nav className="main-nav">
-      <a href="https://cheekycorgi.com">
+      <a href="https://cheekycorgi.com" style={{height: '23px'}}>
         <img src="/assets/logo.svg" alt="Cheeky Corgi" />
       </a>
       

@@ -98,16 +98,79 @@ input[type=number] {
   align-items: center;
   padding: 1.21875rem 4rem 1.21875rem 2rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     padding: .75rem 1.5rem;
   }
 
   .toggle-navbar {
-    padding: .125rem .5rem;
+    padding: 18px;
     background-color: transparent;
-    border: 1px solid $color2;
     border-radius: .25rem;
+    border: none;
+    outline: none;
     cursor: pointer;
+
+    .menu-button {
+      -webkit-user-select: text;
+
+      .line-1, .line-3{
+        transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); 
+        transform-style: preserve-3d;
+      }
+      .line-2 {
+        opacity: 1;
+      }
+
+      .line-1.expand {
+        transform: translate3d(0px, 7px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(40deg) skew(0deg, 0deg);
+        transform-style: preserve-3d;
+      }
+      .line-2.expand {
+        opacity: 0;
+      }
+      .line-3.expand {
+        transform: translate3d(0px, -7px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(-40deg) skew(0deg, 0deg);
+        transform-style: preserve-3d;
+      }
+
+      .line-1{
+        width: 25px;
+        height: 3px;
+        max-height: 3px;
+        max-width: 25px;
+        min-height: 3px;
+        min-width: 25px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+        background-color: #000;
+      }
+
+      .line-2{
+        width: 25px;
+        height: 3px;
+        max-height: 3px;
+        max-width: 25px;
+        min-height: 3px;
+        min-width: 25px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+        background-color: #000;
+      }
+
+      .line-3{
+        width: 25px;
+        height: 3px;
+        max-height: 3px;
+        max-width: 25px;
+        min-height: 3px;
+        min-width: 25px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+        background-color: #000;
+      }
+    }
 
     @media (min-width: 960px) {
       display: none;
@@ -163,27 +226,34 @@ input[type=number] {
     }
   }
 }
+.nav-modal--wrapper {
+  height: calc(100vh - 71px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  position: fixed;
+  z-index: 10;
+}
 
 .nav-modal {
-  &__item {
-    padding: .5rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: $color1;
+  z-index: 2;
 
-    &:not(:last-child) {
-      border-bottom: 1px solid $color5;
-    }
+  &__item {
+    padding: 1.25rem 1.625rem;
+    color: rgba(255,255,255,0.5);
+    font-size: 1rem;
+    font-weight: 600;
   }
 
   &__social {
-    margin-top: 1rem;
-    padding: .75rem;
-    ul {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
   }
 }
 

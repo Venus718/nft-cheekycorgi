@@ -22,12 +22,29 @@
     justify-content: space-between;
     align-items: center;
 
+    .sploot-balance__claim-button1 {
+      display: block;
+
+      img {
+        width: 6rem;
+        margin-right: 1rem;
+      }
+    }
     @media (min-width: 576px) {
       .sploot-balance__claim-button1 {
         display: none;
       }
     }
 
+    .sploot-balance__claim-button2 {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 6rem;
+        margin-right: 1rem;
+      }
+    }
     @media (max-width: 576px) {
       .sploot-balance__claim-button2 {
         display: none;
@@ -78,6 +95,26 @@
 
 .change-corgi-modal {
   position: relative;
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .75rem;
+
+    h3.change-value-title {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .max-characters {
+      color: $color11;
+    }
+  }
+
   a.close {
     padding: .625rem 1rem;
     background-color: $color2;
@@ -87,18 +124,9 @@
     left: calc(50vw + 10rem);
     cursor: pointer;
   }
-
-  h3.change-value-title {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-top: 0;
-    margin-bottom: .75rem;
-  }
   
-  input.corgi-value {
+  .corgi-value {
     border: none;
-    border-radius: 99px;
     background-color: $bgnd4;
     color: $color2;
     padding: .8125rem 1.6875rem;
@@ -110,6 +138,14 @@
     &::placeholder {
       color: $color10;
     }
+  }
+
+  input.corgi-value {
+    border-radius: 99px;
+  }
+
+  textarea.corgi-value {
+    border-radius: 1rem;
   }
   
   button.submit-corgi-change{

@@ -60,11 +60,8 @@
     }
 
     .sploot-supply-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-
+      display: block;
+      
       .info-card {
         position: relative;
         max-width: 27.75rem;

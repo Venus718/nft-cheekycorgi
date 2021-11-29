@@ -64,11 +64,6 @@ export default function MainNav() {
                   Claim
                 </Link>
               </li>
-              <li>
-                <a href="https://cheekycorgi.com/og-corgis">
-                  OG Corgis
-                </a>
-              </li>
               <li className={router.pathname == '/my-corgis' ? 'active' : ''}>
                 <Link href="/my-corgis">
                   My Corgis
@@ -78,6 +73,11 @@ export default function MainNav() {
                 <Link href="/sploot">
                   Sploot
                 </Link>
+              </li>
+              <li>
+                <a href="https://cheekycorgi.com/og-corgis">
+                  OG Corgis
+                </a>
               </li>
               <li>
                 <a href="https://mintology.gitbook.io/untitled/" target="_blank" rel="noreferrer">
@@ -133,11 +133,6 @@ export default function MainNav() {
               </Link>
             </div>
             <div className="nav-modal__item">
-              <a href="https://cheekycorgi.com/og-corgis">
-                OG Corgis
-              </a>
-            </div>
-            <div className="nav-modal__item">
               <Link href="/my-corgis">
                 <a href="#" onClick={beforeNavigate}>My Corgis</a>
               </Link>
@@ -146,6 +141,11 @@ export default function MainNav() {
               <Link href="/sploot">
                 <a href="#" onClick={beforeNavigate}>Sploot</a>
               </Link>
+            </div>
+            <div className="nav-modal__item">
+              <a href="https://cheekycorgi.com/og-corgis">
+                OG Corgis
+              </a>
             </div>
             <div className="nav-modal__item">
               <a href="https://mintology.gitbook.io/untitled/">

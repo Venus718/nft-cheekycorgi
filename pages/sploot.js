@@ -77,9 +77,23 @@ export default function Faq() {
             <img src="/icons/book.svg" />
           </div>
           <h3>Personalize</h3>
-          <p>
+          <p className="yield-sploot">
             Personalised name and bio costs <span className="text-yellow text-bold">{nameChangePrice} $SPLOOT</span> each. Your corgi is
             ready to meet the whole world in the metaverse.
+          </p>
+          <div className="book-icon">
+            <img src="/icons/governance.svg" />
+          </div>
+          <h3>Governance</h3>
+          <p className="yield-sploot">
+            $SPLOOT token will be used for voting in CheekyCorgi community for future roadmap
+          </p>
+          <div className="book-icon">
+            <img src="/icons/purchase.svg" />
+          </div>
+          <h3>Purchase</h3>
+          <p style={{marginBottom: '2rem'}}>
+            $SPLOOT token can be used for purchasing CheekyCorgi VX (coming end of Dec) and Corgiland (coming Q1, 2022) and other in game items in CheekyCorgi ecosystem.
           </p>
         </div>
 

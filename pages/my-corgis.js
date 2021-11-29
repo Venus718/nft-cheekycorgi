@@ -12,7 +12,9 @@ import Modal from 'react-modal'
 
 import useContract from '../hooks/useContract'
 
-const ChangeFieldModalStyles = {
+import * as Config from '../data/contract'
+
+const ChangeNameModalStyles = {
   content: {
     width: '23.5rem',
     height: '14rem',
@@ -24,6 +26,20 @@ const ChangeFieldModalStyles = {
     border: 'none'
   }
 }
+
+const ChangeBioModalStyles = {
+  content: {
+    width: '23.5rem',
+    height: '19rem',
+    margin: '0 auto',
+    top: '30%',
+    borderRadius: '1.25rem',
+    backgroundColor: '#292521',
+    padding: '1.5625rem',
+    border: 'none'
+  }
+}
+
 
 export default function MyCorgis() {
   const wallet = useSelector(state => state.wallet)
@@ -179,7 +195,7 @@ export default function MyCorgis() {
   const onClickSubmitBio = async () => {
     console.log('active bio: ', activeTokenId, bioInput)
     const _bioInput = bioInput.trim()
-    if (!_bioInput.length || _bioInput.length > 32) {
+    if (!_bioInput.length || _bioInput.length > 280) {
       return NotificationManager.info('Invalid bio!')
     }
 
@@ -237,6 +253,12 @@ export default function MyCorgis() {
         </div>
 
         <div className="sploot-balance__claim-button2">
+          <a href="https://dextools.io" style={{height: "22px"}}>
+            <img src="/icons/logo-dextools.png" alt="dextools" height="22" />
+          </a>
+          <a href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.NFT_CONTRACT_ADDRESS}  style={{height: "22px"}}>
+            <img src="/icons/logo-ether1.png" alt="etherscan" height="22" />
+          </a>
           <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
             { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}
           </SubmitButton>
@@ -254,7 +276,6 @@ export default function MyCorgis() {
         !loading && !balanceOfNft && (
           <div className="not-found-corgi">
             <h3>No corgi found</h3>
-            <p>Eget nullam pellentesque cras tellus eu sit amet. Vel velit ut condimentum sit pretium <br/>ultrices tortor convallis. Tempus enim gravida elit magna erat viverra.</p>
           </div>
         )
       }
@@ -287,10 +308,13 @@ export default function MyCorgis() {
       <Modal
         isOpen={showChangeNameModal}
         onRequestClose={() => !pendingUpdate && setShowChangeNameModal(false)}
-        style={ChangeFieldModalStyles}
+        style={ChangeNameModalStyles}
       >
         <div className="change-corgi-modal">
-          <h3 className="change-value-title">Change Name</h3>
+          <div className="change-corgi-modal__title">
+            <h3 className="change-value-title">Change Name</h3>
+            <div className="max-characters">(Max 32 characters)</div>
+          </div>
           <input type="text" id="name" className="corgi-value" value={nameInput} onChange={(e) => setNameInput(e.target.value)} placeholder="Type Name..." />
           <button 
             className="submit-corgi-change"
@@ -307,11 +331,14 @@ export default function MyCorgis() {
       <Modal
         isOpen={showChangeBioModal}
         onRequestClose={() => !pendingUpdate && setShowChangeBioModal(false)}
-        style={ChangeFieldModalStyles}
+        style={ChangeBioModalStyles}
       >
         <div className="change-corgi-modal">
-          <h3 className="change-value-title">Change Bio</h3>
-          <input type="text" id="bio" className="corgi-value" value={bioInput} onChange={(e) => setBioInput(e.target.value)} placeholder="Type Bio..." />
+          <div className="change-corgi-modal__title">
+            <h3 className="change-value-title">Change Bio</h3>
+            <div className="max-characters">(Max 280 characters)</div>
+          </div>
+          <textarea id="bio" className="corgi-value" value={bioInput} onChange={(e) => setBioInput(e.target.value)} placeholder="Type Bio..." rows="5" />
           <button 
             className="submit-corgi-change"
             onClick={onClickSubmitBio}

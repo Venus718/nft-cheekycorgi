@@ -163,7 +163,7 @@ export default function Claim() {
         </div>
         
         <p className="total-minted">
-          Total supply: {maxClaimable}
+          Total supply: {maxClaimable - totalClaimed}
         </p>
 
         <p className="claimable-nfts">

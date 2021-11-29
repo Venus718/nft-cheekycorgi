@@ -78,7 +78,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
           toggleHandler={() => toggleHandler(1)}
         >
           <div>
-            <div>{bio}</div>
+            <div style={{overflowWrap: 'break-word'}}>{bio}</div>
           </div>
         </Accordion>
         <Accordion 

@@ -1,5 +1,6 @@
 module.exports = {
   basePath: '/mint',
+  assetPrefix: 'https://cheekycorgi.com/mint',
   reactStrictMode: false,
   trailingSlash: true,
   eslint: {

@@ -346,14 +346,14 @@
     "name": "PAYMENT_METHODS",
     "outputs": [
       {
-        "internalType": "contract IERC20",
+        "internalType": "address",
         "name": "token",
         "type": "address"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "decimals",
-        "type": "uint8"
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -811,9 +811,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "_claimableId",
-        "type": "uint8"
+        "type": "uint256"
       },
       {
         "internalType": "uint256",

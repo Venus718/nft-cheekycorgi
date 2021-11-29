@@ -45,7 +45,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
   return (
     <div className={`corgi-details ${id <= 0 ? 'hidden' : ''}`}>
       <div className="image-holder">
-        <img src={imageUri ?? "/assets/unknown-corgi.png"} />
+        <img src={imageUri ?? "/mint/assets/unknown-corgi.png"} />
       </div>
 
       <div className="details-holder">
@@ -54,7 +54,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
           <button onClick={onClickChangeBio}>Change Bio</button>
           <button>
             <a
-              href={Config.OPENSEA_URL[Config.ACTIVE_NETWORK_ID] + '/assets/' + Config.NFT_CONTRACT_ADDRESS + '/' + id}
+              href={Config.OPENSEA_URL[Config.ACTIVE_NETWORK_ID] + '/mint/assets/' + Config.NFT_CONTRACT_ADDRESS + '/' + id}
               target="_blank"
               rel="noreferrer"
             >Link to Opensea</a>
@@ -63,7 +63,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
 
         <Accordion 
           title="Name"
-          icon="/icons/name.svg"
+          icon="/mint/icons/name.svg"
           opened={activeAccordionId === 0} 
           toggleHandler={() => toggleHandler(0)}
         >
@@ -73,7 +73,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
         </Accordion>
         <Accordion
           title="Bio"
-          icon="/icons/bio.svg"
+          icon="/mint/icons/bio.svg"
           opened={activeAccordionId === 1}
           toggleHandler={() => toggleHandler(1)}
         >
@@ -83,7 +83,7 @@ export default function CorgiDetails({id, name, bio, uri, onChangeRequest}) {
         </Accordion>
         <Accordion 
           title="Details"
-          icon="/icons/details.svg"
+          icon="/mint/icons/details.svg"
           opened={activeAccordionId === 2}
           toggleHandler={() => toggleHandler(2)}
         >
@@ -135,8 +135,8 @@ const Accordion = ({title, icon, toggleHandler, opened, children}) => {
         <a href="#">
           {
             opened ? 
-              <img src="/icons/up.svg" /> :
-              <img src="/icons/down.svg" />
+              <img src="/mint/icons/up.svg" /> :
+              <img src="/mint/icons/down.svg" />
           }
         </a>
       </div>

@@ -46,7 +46,7 @@ const PaymentMethod = ({label, icon, active, onClick}) => {
       </span>
       <div className="payment-item__checked">
       {
-        active && <img src="/icons/coin-selected.svg" />
+        active && <img src="/mint/icons/coin-selected.svg" />
       }
       </div>
     </a>
@@ -324,13 +324,13 @@ export default function Home() {
               !selectedCoin ? (
                 <div className="not-selected">
                   Pay By&nbsp;&nbsp;
-                  <img src="/icons/down.svg" alt="down" />
+                  <img src="/mint/icons/down.svg" alt="down" />
                 </div>
               ) : (
                 <div className="selected">
-                  <img src={`/icons/coin-${selectedCoin}.svg`} style={{width: '2rem'}} />&nbsp;&nbsp;
+                  <img src={`/mint/icons/coin-${selectedCoin}.svg`} style={{width: '2rem'}} />&nbsp;&nbsp;
                   {selectedCoin.toUpperCase()}&nbsp;&nbsp;
-                  <img src="/icons/down.svg" alt="down" />
+                  <img src="/mint/icons/down.svg" alt="down" />
                 </div>
               )
             }
@@ -368,10 +368,10 @@ export default function Home() {
         style={CoinSelectionModalStyles}
       >
         <h3 className="payment-selection-title">Select Payment Option</h3>
-        <PaymentMethod icon="/icons/coin-eth.svg" label="ETH" active={selectedCoin==='eth'} onClick={() => onSelectedCoin('eth')} />
-        <PaymentMethod icon="/icons/coin-shiba.svg" label="Shiba" active={selectedCoin==='shiba'} onClick={() => onSelectedCoin('shiba')} />
-        <PaymentMethod icon="/icons/coin-usdt.svg" label="USDT" active={selectedCoin==='usdt'} onClick={() => onSelectedCoin('usdt')} />
-        <PaymentMethod icon="/icons/coin-usdc.svg" label="USDC" active={selectedCoin==='usdc'} onClick={() => onSelectedCoin('usdc')} />
+        <PaymentMethod icon="/mint/icons/coin-eth.svg" label="ETH" active={selectedCoin==='eth'} onClick={() => onSelectedCoin('eth')} />
+        <PaymentMethod icon="/mint/icons/coin-shiba.svg" label="Shiba" active={selectedCoin==='shiba'} onClick={() => onSelectedCoin('shiba')} />
+        <PaymentMethod icon="/mint/icons/coin-usdt.svg" label="USDT" active={selectedCoin==='usdt'} onClick={() => onSelectedCoin('usdt')} />
+        <PaymentMethod icon="/mint/icons/coin-usdc.svg" label="USDC" active={selectedCoin==='usdc'} onClick={() => onSelectedCoin('usdc')} />
       </Modal>
 
       <Modal
@@ -397,7 +397,7 @@ export default function Home() {
             <p>Kindly approve the transaction in your wallet</p>
             <div className="selected-tokens-info">
               <div className="token-label">
-                <img src={`/icons/coin-${selectedCoin}2.svg`} />
+                <img src={`/mint/icons/coin-${selectedCoin}2.svg`} />
                 <div className="token-label__name">{selectedCoinTitle}</div>
               </div>
               <div className="token-amount">{totalPrice}</div>
@@ -434,7 +434,7 @@ export default function Home() {
                   !pendingApprove && (
                     finishedApprove ? (
                       <button onClick={onClickApprove}>
-                        <img src="/icons/checked.svg" />
+                        <img src="/mint/icons/checked.svg" />
                       </button>
                     ) : (
                       <button onClick={onClickApprove}>

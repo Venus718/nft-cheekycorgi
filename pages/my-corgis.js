@@ -240,7 +240,7 @@ export default function MyCorgis() {
       <h1>My Corgis</h1>
       <div className="sploot-balance-section">
         <div className="sploot-balance">
-          <img src="/icons/sploot.svg" />
+          <img src="/mint/icons/sploot.svg" />
           <div className="balance-numbers">
             <p>Balance: <span className="text-white">{(balanceOfYieldToken / 10**decimalsOfYieldToken).toFixed(2)}</span></p>
             <p>Pending: <span className="text-white">{(claimableBalanceOfYieldToken  / 10**decimalsOfYieldToken).toFixed(2)}</span></p>
@@ -254,10 +254,10 @@ export default function MyCorgis() {
 
         <div className="sploot-balance__claim-button2">
           <a href="https://dextools.io" style={{height: "22px"}}>
-            <img src="/icons/logo-dextools.png" alt="dextools" height="22" />
+            <img src="/mint/icons/logo-dextools.png" alt="dextools" height="22" />
           </a>
           <a href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.NFT_CONTRACT_ADDRESS}  style={{height: "22px"}}>
-            <img src="/icons/logo-ether1.png" alt="etherscan" height="22" />
+            <img src="/mint/icons/logo-ether1.png" alt="etherscan" height="22" />
           </a>
           <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>
             { pendingClaiming ? 'Claiming' : 'CLAIM SPLOOT'}
@@ -324,7 +324,7 @@ export default function MyCorgis() {
             {pendingUpdate? 'Changing' : 'Change Name'}
           </button>
           <p className="change-corgi-fee">Fee 150 Sploot</p>
-          <a className="close" onClick={(e) => !pendingUpdate && setShowChangeNameModal(false)} ><img src="/icons/times.svg" /></a>
+          <a className="close" onClick={(e) => !pendingUpdate && setShowChangeNameModal(false)} ><img src="/mint/icons/times.svg" /></a>
         </div>
       </Modal>
 
@@ -347,7 +347,7 @@ export default function MyCorgis() {
             {pendingUpdate? 'Changing' : 'Change Bio'}
           </button>
           <p className="change-corgi-fee">Fee 150 Sploot</p>
-          <a className="close" onClick={(e) => !pendingUpdate && setShowChangeBioModal(false)} ><img src="/icons/times.svg" /></a>
+          <a className="close" onClick={(e) => !pendingUpdate && setShowChangeBioModal(false)} ><img src="/mint/icons/times.svg" /></a>
         </div>
       </Modal>
     </div>

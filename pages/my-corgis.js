@@ -184,6 +184,7 @@ export default function MyCorgis() {
       const _tokenNames = clonedeep(ownedTokenNames)
       _tokenNames[activeTokenId] = _nameInput
       setOwnedTokenNames(_tokenNames)
+      await fetchYieldRewards()
       NotificationManager.success('Changing name succeeded!')
       setShowChangeNameModal(false)
     } catch(e) {
@@ -211,6 +212,7 @@ export default function MyCorgis() {
       const _tokenBios = clonedeep(ownedTokenBios)
       _tokenBios[activeTokenId] = _bioInput
       setOwnedTokenBios(_tokenBios)
+      await fetchYieldRewards()
       NotificationManager.success('Changing bio succeeded!')
       setShowChangeBioModal(false)
     } catch(e) {
@@ -323,7 +325,7 @@ export default function MyCorgis() {
           >
             {pendingUpdate? 'Changing' : 'Change Name'}
           </button>
-          <p className="change-corgi-fee">Fee 150 Sploot</p>
+          <p className="change-corgi-fee">Fee 100,000 Sploot</p>
           <a className="close" onClick={(e) => !pendingUpdate && setShowChangeNameModal(false)} ><img src="/icons/times.svg" /></a>
         </div>
       </Modal>
@@ -346,7 +348,7 @@ export default function MyCorgis() {
           >
             {pendingUpdate? 'Changing' : 'Change Bio'}
           </button>
-          <p className="change-corgi-fee">Fee 150 Sploot</p>
+          <p className="change-corgi-fee">Fee 100,000 Sploot</p>
           <a className="close" onClick={(e) => !pendingUpdate && setShowChangeBioModal(false)} ><img src="/icons/times.svg" /></a>
         </div>
       </Modal>

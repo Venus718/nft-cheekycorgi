@@ -44,7 +44,10 @@ export default function Claim() {
         if (claimableNftCounts[_collectionId] > 0) {
           for (let _index = 0; _index < claimableNftCounts[_collectionId]; _index ++) {
             let _tokenId = await _collection.contract.methods.tokenOfOwnerByIndex(wallet.address, _index).call()
+            console.log('>>>> Claiming CheekyCorgi by ', _collectionId, _tokenId)
+
             let _isClaimedAlready = await nftContract.methods.isClaimedAlready(_collectionId, _tokenId).call()
+            console.log('>>>> Claiming CheekyCorgi by ', _collection.address, _tokenId, _isClaimedAlready)
             if (!_isClaimedAlready) {
               await nftContract.methods.claim(_collection.address, _tokenId).send({from: wallet.address})
               setClaimed(true)
@@ -56,6 +59,7 @@ export default function Claim() {
       }
     } catch(e) {
       setPendingClaim(false)
+      console.log('error: ', e)
       return NotificationManager.error('Claiming failed unexpectedly!')
     }
     setPendingClaim(false)

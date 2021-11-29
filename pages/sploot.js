@@ -38,7 +38,7 @@ export default function Faq() {
 
     const _nameChangePrice = await nftContract.methods.NAME_CHANGE_PRICE().call()
     console.log('name change price: ', _nameChangePrice)
-    setNameChangePrice(Number(_nameChangePrice) / (10**Number(_decimals)))
+    setNameChangePrice(Math.ceil(Number(_nameChangePrice) / (10**Number(_decimals))))
   }
 
   useEffect(() => {
@@ -71,14 +71,14 @@ export default function Faq() {
           </div>
           <h3>YIELD</h3>
           <p className="yield-sploot">
-            Every CheekyCorgi yields <span className="text-yellow text-bold">{baseRate} $SPLOOT</span> a day. Every SPLOOT is cute and precious.
+            Every CheekyCorgi yields <span className="text-yellow text-bold">{baseRate.toLocaleString()} $SPLOOT</span> a day. Every SPLOOT is cute and precious.
           </p>
           <div className="book-icon">
             <img src="/icons/book.svg" />
           </div>
           <h3>Personalize</h3>
           <p className="yield-sploot">
-            Personalised name and bio costs <span className="text-yellow text-bold">{nameChangePrice} $SPLOOT</span> each. Your corgi is
+            Personalised name and bio costs <span className="text-yellow text-bold">{nameChangePrice.toLocaleString()} $SPLOOT</span> each. Your corgi is
             ready to meet the whole world in the metaverse.
           </p>
           <div className="book-icon">
@@ -125,7 +125,7 @@ export default function Faq() {
                 <span className="text-yellow text-super-bold">$SPLOOT</span> is the utility token that fuels the CheekyCorgi ecosystem. It is NOT an investment and has NO economic value.
               </p>
               <p style={{marginTop: '27px'}}>
-                Each CheekyCorgi is able to claim {baseRate} $SPLOOT tokens per day. Total circulation of $SPLOOT token is {capOfYieldToken.toLocaleString()} only, make every SPLOOT precious and rare.
+                Each CheekyCorgi is able to claim {baseRate.toLocaleString()} $SPLOOT tokens per day. Total circulation of $SPLOOT token is {capOfYieldToken.toLocaleString()} only, make every SPLOOT precious and rare.
               </p>
             </div>
           </div>

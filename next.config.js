@@ -1,4 +1,5 @@
 module.exports = {
+  basePath: '/mint',
   reactStrictMode: false,
   trailingSlash: true,
   eslint: {

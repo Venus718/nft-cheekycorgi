@@ -80,7 +80,7 @@ export default function MainNav() {
                 </a>
               </li>
               <li>
-                <a href="https:/ology.gitbook.io/untitled/" target="_blank" rel="noreferrer">
+                <a href="https://mintology.gitbook.io/untitled/" target="_blank" rel="noreferrer">
                   FAQ
                 </a>
               </li>

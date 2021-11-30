@@ -35,7 +35,7 @@ export default function MainNav() {
     <>
       <nav className="main-nav">
         <a href="https://cheekycorgi.com" style={{height: '23px'}}>
-          <img src="/mint/assets/logo.svg" alt="Cheeky Corgi" />
+          <img src="/assets/logo.svg" alt="Cheeky Corgi" />
         </a>
 
         <button className="toggle-navbar" onClick={onShowNavModal}>
@@ -80,7 +80,7 @@ export default function MainNav() {
                 </a>
               </li>
               <li>
-                <a href="https://mintology.gitbook.io/untitled/" target="_blank" rel="noreferrer">
+                <a href="https:/ology.gitbook.io/untitled/" target="_blank" rel="noreferrer">
                   FAQ
                 </a>
               </li>
@@ -91,22 +91,22 @@ export default function MainNav() {
             <ul>
               <li>
                 <a href="https://twitter.com/cheeky_corgi">
-                  <img src="/mint/assets/twitter.svg" alt="Twitter" />
+                  <img src="/assets/twitter.svg" alt="Twitter" />
                 </a>
               </li>
               <li>
                 <a href="https://discord.com/invite/AAvqHwf2YR">
-                  <img src="/mint/assets/discord.svg" alt="Discord" />
+                  <img src="/assets/discord.svg" alt="Discord" />
                 </a>
               </li>
               <li>
                 <a href="https://www.instagram.com/cheekycorginft/">
-                  <img src="/mint/assets/instagram.svg" alt="Instagram" />
+                  <img src="/assets/instagram.svg" alt="Instagram" />
                 </a>
               </li>
               <li>
                 <a href="https://opensea.com/collection/cheekycorgi">
-                  <img src="/mint/assets/opensea.svg" alt="Opensea" />
+                  <img src="/assets/opensea.svg" alt="Opensea" />
                 </a>
               </li>
             </ul>
@@ -123,7 +123,7 @@ export default function MainNav() {
               </a>
             </div>
             <div className="nav-modal__item">
-              <Link href="/mint">
+              <Link href="">
                 <a href="#" onClick={beforeNavigate}>Mint</a>
               </Link>
             </div>
@@ -148,23 +148,23 @@ export default function MainNav() {
               </a>
             </div>
             <div className="nav-modal__item">
-              <a href="https://mintology.gitbook.io/untitled/">
+              <a href="https:/ology.gitbook.io/untitled/">
                 FAQ
               </a>
             </div>
 
             <div className="nav-modal__social">
               <a href="https://twitter.com/cheeky_corgi" style={{marginRight: '22px'}} target="_blank" rel="noreferrer">
-                <img src="/mint/assets/twitter.svg" alt="Twitter" />
+                <img src="/assets/twitter.svg" alt="Twitter" />
               </a>
               <a href="https://discord.com/invite/AAvqHwf2YR" style={{marginRight: '22px'}} target="_blank" rel="noreferrer">
-                <img src="/mint/assets/discord.svg" alt="Discord" />
+                <img src="/assets/discord.svg" alt="Discord" />
               </a>
               <a href="https://www.instagram.com/cheekycorginft/" style={{marginRight: '22px'}} target="_blank" rel="noreferrer">
-                <img src="/mint/assets/instagram.svg" alt="Instagram" />
+                <img src="/assets/instagram.svg" alt="Instagram" />
               </a>
               <a href="https://opensea.com/collection/cheekycorgi" target="_blank" rel="noreferrer">
-                <img src="/mint/assets/opensea.svg" alt="Opensea" />
+                <img src="/assets/opensea.svg" alt="Opensea" />
               </a>
             </div>
           </div>

@@ -17,13 +17,13 @@ export default function MyCorgis() {
 
       <div className="socials">
         <a href="https://twitter.com/cheeky_corgi">
-          <img src="/mint/assets/twitter.svg" alt="Twitter" />
+          <img src="/assets/twitter.svg" alt="Twitter" />
         </a>
         <a href="https://discord.com/invite/AAvqHwf2YR">
-          <img src="/mint/assets/discord.svg" alt="Discord" />
+          <img src="/assets/discord.svg" alt="Discord" />
         </a>
         <a href="https://www.instagram.com/cheekycorginft/">
-          <img src="/mint/assets/instagram.svg" alt="Instagram" />
+          <img src="/assets/instagram.svg" alt="Instagram" />
         </a>
       </div>
     </footer>

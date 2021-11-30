@@ -53,7 +53,7 @@ export default function Faq() {
         <title>FAQ | CheekyCorgi.com</title>
       </Head>
       <div className="what-is-sploot">
-        <img src="/mint/assets/corgi.svg" /> <span>What is SPLOOT?</span>
+        <img src="/assets/corgi.svg" /> <span>What is SPLOOT?</span>
       </div>
 
       <div className="sploot-everything">
@@ -63,18 +63,18 @@ export default function Faq() {
             SPLOOT sits at the core of everything in the CheekyCorgi universe. As the universe grows more utility will be added.
           </p>
           <div className="three-corgis">
-            <img src="/mint/assets/corgi.svg" width="40" />
+            <img src="/assets/corgi.svg" width="40" />
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src="/mint/assets/corgi.svg" width="40" />
+            <img src="/assets/corgi.svg" width="40" />
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src="/mint/assets/corgi.svg" width="40" />
+            <img src="/assets/corgi.svg" width="40" />
           </div>
           <h3>YIELD</h3>
           <p className="yield-sploot">
             Every CheekyCorgi yields <span className="text-yellow text-bold">{baseRate} $SPLOOT</span> a day. Every SPLOOT is cute and precious.
           </p>
           <div className="book-icon">
-            <img src="/mint/icons/book.svg" />
+            <img src="/icons/book.svg" />
           </div>
           <h3>Personalize</h3>
           <p className="yield-sploot">
@@ -82,14 +82,14 @@ export default function Faq() {
             ready to meet the whole world in the metaverse.
           </p>
           <div className="book-icon">
-            <img src="/mint/icons/governance.svg" />
+            <img src="/icons/governance.svg" />
           </div>
           <h3>Governance</h3>
           <p className="yield-sploot">
             $SPLOOT token will be used for voting in CheekyCorgi community for future roadmap
           </p>
           <div className="book-icon">
-            <img src="/mint/icons/purchase.svg" />
+            <img src="/icons/purchase.svg" />
           </div>
           <h3>Purchase</h3>
           <p style={{marginBottom: '2rem'}}>

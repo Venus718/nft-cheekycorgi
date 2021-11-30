@@ -49,13 +49,13 @@ export default function MainNav() {
         <div className="right-nav">
           <div className="main-pages">
             <ul>
-              <li className={router.pathname == '/' ? 'active' : ''}>
+              <li>
                 <a href="https://cheekycorgi.com">
                   Home
                 </a>
               </li>
-              <li className={router.pathname == '/mint' ? 'active' : ''}>
-                <Link href="/mint">
+              <li className={router.pathname == '/' ? 'active' : ''}>
+                <Link href="/">
                   Mint
                 </Link>
               </li>
@@ -123,7 +123,7 @@ export default function MainNav() {
               </a>
             </div>
             <div className="nav-modal__item">
-              <Link href="/mint">
+              <Link href="">
                 <a href="#" onClick={beforeNavigate}>Mint</a>
               </Link>
             </div>
@@ -148,7 +148,7 @@ export default function MainNav() {
               </a>
             </div>
             <div className="nav-modal__item">
-              <a href="https://mintology.gitbook.io/untitled/">
+              <a href="https:/ology.gitbook.io/untitled/">
                 FAQ
               </a>
             </div>

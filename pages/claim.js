@@ -19,6 +19,8 @@ export default function Claim() {
 
   const { fastRefresh } = useRefresh()
 
+  const [publicSaleStart, setPublicSaleStart] = useState(Date.now() / 1000)
+
   const [totalClaimed, setTotalClaimed] = useState(0)
   const [maxClaimable, setMaxClaimable] = useState(300)
   const [claimed, setClaimed] = useState(false)
@@ -85,6 +87,10 @@ export default function Claim() {
   useEffect(() => {
     const fetchClaimedStatus = async () => {
       console.log('fetch claimed status ...')
+      let _publicSaleOpen = await nftContract.methods.PUBLIC_SALE_OPEN().call()
+      console.log('public sale open: ', _publicSaleOpen, '/', Date.now() / 1000)
+      setPublicSaleStart(_publicSaleOpen)
+
       let _totalClaimed = await nftContract.methods.totalClaimed().call()
       let _maxClaimable = await nftContract.methods.maxClaimable().call()
       console.log('total claimed: ', _totalClaimed)
@@ -188,7 +194,15 @@ export default function Claim() {
         </p>
 
         <div className="mint-button-holder">
-          <SubmitButton onClick={onClickClaim} disabled={claimed || (!totalClaimableNftCounts && claimableUcdBalance < claimableUcdLimits) || pendingClaim}>
+          <SubmitButton 
+            onClick={onClickClaim}
+            disabled={
+              (publicSaleStart > Date.now() / 1000) ||
+              claimed || 
+              (!totalClaimableNftCounts && claimableUcdBalance < claimableUcdLimits) || 
+              pendingClaim
+            }
+          >
             {
               claimed ? 
               'Claimed Already' : 

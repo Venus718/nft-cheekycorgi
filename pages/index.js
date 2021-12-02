@@ -75,6 +75,8 @@ export default function Home() {
   ] = useContract()
   const { fastRefresh } = useRefresh()
 
+  const [publicSaleStart, setPublicSaleStart] = useState(Date.now() / 1000)
+
   const [maxQuantity, setMaxQuantity] = useState(10)
   const [paymentMethods, setPaymentMethods] = useState([])
 
@@ -198,6 +200,10 @@ export default function Home() {
   useEffect(() => {
     console.log('fetchReadOnly from nft contract')
     const fetchReadOnlyStatus = async () => {
+      let _publicSaleOpen = await nftContract.methods.PUBLIC_SALE_OPEN().call()
+      console.log('public sale open: ', _publicSaleOpen, '/', Date.now() / 1000)
+      setPublicSaleStart(_publicSaleOpen)
+
       let _maxQuantity = await nftContract.methods.maxPublicQuantity().call()
       let _token1 = await nftContract.methods.PAYMENT_METHODS(0).call()
       let _token2 = await nftContract.methods.PAYMENT_METHODS(1).call()
@@ -447,7 +453,18 @@ export default function Home() {
             )
           }
 
-          <button className="checkout" onClick={onClickConfirmMint} disabled={pendingMint || pendingApprove || !noNeedApprove}>{confirmMintButtonLabel}</button>
+          <button 
+            className="checkout"
+            onClick={onClickConfirmMint}
+            disabled={
+              (publicSaleStart > Date.now() / 1000) ||
+              pendingMint || 
+              pendingApprove || 
+              !noNeedApprove
+            }
+          >
+              {confirmMintButtonLabel}
+          </button>
         </div>
       </Modal>
     </div>

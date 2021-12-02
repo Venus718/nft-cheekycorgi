@@ -258,7 +258,7 @@ export default function MyCorgis() {
           <a href="https://dextools.io" style={{height: "22px"}}>
             <img src="/icons/logo-dextools.png" alt="dextools" height="22" />
           </a>
-          <a href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.NFT_CONTRACT_ADDRESS}  style={{height: "22px"}}>
+          <a href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.YIELD_TOKEN_CONTRACT_ADDRESS}  style={{height: "22px"}}>
             <img src="/icons/logo-ether1.png" alt="etherscan" height="22" />
           </a>
           <SubmitButton onClick={claimYieldRewards} disabled={pendingClaiming || (claimableBalanceOfYieldToken === 0)}>

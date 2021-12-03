@@ -31,21 +31,28 @@ export default function Claim() {
   const [claimableNftBalances, setClaimableNftBalances] = useState([])
 
   const [claimableUcdAddress, setClaimableUcdAddress] = useState()
-  const [claimableUcdContract, setClaimableUcdContract] = useState()
-  const [claimableUcdBalance, setClaimableUcdBalance] = useState(0)
-  const [claimableUcdLimits, setClaimableUcdLimits] = useState(9999999999999)
+  const [claimableByUcd, setClaimableByUcd] = useState()
 
   const onClickClaim = async () => {
     console.log('total claimed: ', totalClaimed)
     console.log('max claimed: ', maxClaimable)
 
-    if (!totalClaimableNftCounts || totalClaimed >= maxClaimable) {
+    if ((!totalClaimableNftCounts && !claimableByUcd) || totalClaimed >= maxClaimable) {
       return NotificationManager.error('All claimed already!')
     }
     console.log('Claiming cheekycorgi ...')
 
     setPendingClaim(true)
     try {
+      // claim by UCD holdings
+      if (claimableByUcd) {
+        console.log('>>>> Claiming CheekyCorgi by UCD: ', claimableUcdAddress)
+        await nftContract.methods.claim(claimableUcdAddress, 0).send({from: wallet.address})
+        setClaimed(true)
+        setPendingClaim(false)
+        return NotificationManager.success('Successfully claimed!')
+      }
+
       // claim by Friendship NFT, ApprovingCorgis, JunkYard
       for(let _collectionId = 0; _collectionId < claimableNftContracts.length; _collectionId ++) {
         let _collection = claimableNftContracts[_collectionId]
@@ -64,15 +71,6 @@ export default function Claim() {
               return NotificationManager.success('Successfully claimed!')
             }
           }
-        }
-
-        // claim by UCD holdings
-        if (claimableUcdBalance >= claimableUcdLimits) {
-          console.log('>>>> Claiming CheekyCorgi by UCD: ', claimableUcdAddress)
-          await nftContract.methods.claim(claimableUcdAddress, 0).send({from: wallet.address})
-          setClaimed(true)
-          setPendingClaim(false)
-          return NotificationManager.success('Successfully claimed!')
         }
       }
     } catch(e) {
@@ -122,18 +120,14 @@ export default function Claim() {
       setClaimableNftBalances(_balances)
 
       console.log('ucd address: ', _claimables[_claimables.length - 1])
-      let _claimableUcdContract = new web3.eth.Contract(erc20ABI, _claimables[_claimables.length - 1])
-      let _balanceOfUCD = await _claimableUcdContract.methods.balanceOf(wallet.address).call()
-      let _claimableLimit = await nftContract.methods.CLAIMABLE_UCD_LIMIT().call()
-      console.log('ucd limit: ', _claimableLimit)
-      console.log('ucd balance: ', _balanceOfUCD)
       setClaimableUcdAddress(_claimables[_claimables.length - 1])
-      setClaimableUcdContract(_claimableUcdContract)
-      setClaimableUcdBalance(Number(_balanceOfUCD))
-      setClaimableUcdLimits(Number(_claimableLimit))
+
+      let _claimableByUcd = await nftContract.methods.claimableUcdHolders(wallet.address).call()
+      setClaimableByUcd(_claimableByUcd)
 
       console.log('created claimable contracts: ', _claimableNftContracts.length)
       console.log('claimable nft balance: ', _totalBalance)
+      console.log('claimable by ucd: ', _claimableByUcd)
     }
 
     if (nftContract) {
@@ -163,11 +157,12 @@ export default function Claim() {
       setTotalClaimableNftCounts(_totalBalance)
       setClaimableNftBalances(_balances)
 
-      let _balanceOfUCD = await claimableUcdContract.methods.balanceOf(wallet.address).call()
-      setClaimableUcdBalance(Number(_balanceOfUCD))
+      let _claimableByUcd = await nftContract.methods.claimableUcdHolders(wallet.address).call()
+      console.log('claimableByUcd: ', _claimableByUcd)
+      setClaimableByUcd(_claimableByUcd)
     }
 
-    if (nftContract && claimableNftContracts.length > 0 && claimableUcdContract) {
+    if (nftContract && claimableNftContracts.length > 0) {
       fetchStatus()
     }
   }, [fastRefresh])
@@ -190,7 +185,7 @@ export default function Claim() {
           Friendship NFT Found: {totalClaimableNftCounts}
         </p>
         <p className="hold-info">
-          UCD Found (UU only): {parseInt(claimableUcdBalance / (10**18))}
+          UCD Found (UU only): {claimableByUcd ? 'Yes' : 'No'}
         </p>
 
         <div className="mint-button-holder">
@@ -199,7 +194,7 @@ export default function Claim() {
             disabled={
               (publicSaleStart > Date.now() / 1000) ||
               claimed || 
-              (!totalClaimableNftCounts && claimableUcdBalance < claimableUcdLimits) || 
+              (!totalClaimableNftCounts && !claimableByUcd) || 
               pendingClaim
             }
           >

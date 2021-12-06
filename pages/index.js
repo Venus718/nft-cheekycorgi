@@ -108,7 +108,7 @@ export default function Home() {
   const onChangeQuantityInput = (e) => {
     e.preventDefault()
     const _newValue = Number(e.target.value)
-    if (_newValue >= 0 && _newValue <= maxQuantity) {
+    if (_newValue >= 0) {
       setQuantity(_newValue)
     }
   }
@@ -303,7 +303,6 @@ export default function Home() {
         <h1>Public Mint</h1>
         <p className="comment">
           Adopt a CheekyCorgi now!<br/>
-          Max of {maxQuantity} Corgis per transaction.
         </p>
         <p className="account-info">
           Connected Account: {toReduced(wallet.address, 4)}

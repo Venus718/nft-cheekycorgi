@@ -105,7 +105,7 @@ export default function MainNav() {
                 </a>
               </li>
               <li>
-                <a href="https://opensea.com/collection/cheekycorgi">
+                <a href="https://opensea.io/collection/cheekycorginft">
                   <img src="/assets/opensea.svg" alt="Opensea" />
                 </a>
               </li>
@@ -163,7 +163,7 @@ export default function MainNav() {
               <a href="https://www.instagram.com/cheekycorginft/" style={{marginRight: '22px'}} target="_blank" rel="noreferrer">
                 <img src="/assets/instagram.svg" alt="Instagram" />
               </a>
-              <a href="https://opensea.com/collection/cheekycorgi" target="_blank" rel="noreferrer">
+              <a href="https://opensea.io/collection/cheekycorginft" target="_blank" rel="noreferrer">
                 <img src="/assets/opensea.svg" alt="Opensea" />
               </a>
             </div>

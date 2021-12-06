@@ -124,7 +124,7 @@ export default function Home() {
   }
 
   const onClickMint = async () => {
-    console.log('trying mint')
+    // console.log('trying mint')
     if (quantity === 0) return
 
     setMintButtonLabel('Minting')
@@ -136,7 +136,7 @@ export default function Home() {
         NotificationManager.success('Minting succeeded!')
         setQuantity(0)
       } catch(e) {
-        console.log('error while minting: ', e)
+        // console.log('error while minting: ', e)
         // notification
         NotificationManager.error('Minting failed!')
       }
@@ -144,14 +144,14 @@ export default function Home() {
       setMintButtonLabel('MINT')
     } else {
       let _tokenBalance = await activePaymentMethod().contract.methods.balanceOf(wallet.address).call()
-      console.log('current balance: ', _tokenBalance, totalPriceWithDecimals)
+      // console.log('current balance: ', _tokenBalance, totalPriceWithDecimals)
       if (Number(_tokenBalance) < totalPriceWithDecimals) {
         setMintButtonLabel('MINT')
         return NotificationManager.error('Insufficient balance!')
       }
 
       let _approvedAmount = await activePaymentMethod().contract.methods.allowance(wallet.address, Config.NFT_CONTRACT_ADDRESS).call()
-      console.log('approved amount: ', _approvedAmount)
+      // console.log('approved amount: ', _approvedAmount)
       setNoNeedApprove(totalPriceWithDecimals < _approvedAmount)
       setFinishedApprove(false)
 
@@ -166,7 +166,7 @@ export default function Home() {
   }
 
   const onClickApprove = async () => {
-    console.log('approving erc20 ..')
+    // console.log('approving erc20 ..')
     try {
       setPendingApprove(true)
       await selectedCoinContract.methods.approve(Config.NFT_CONTRACT_ADDRESS, web3.utils.toWei("999999999999999", "ether")).send({from: wallet.address})
@@ -179,7 +179,7 @@ export default function Home() {
   }
 
   const onClickConfirmMint = async () => {
-    console.log('confirming mint')
+    // console.log('confirming mint')
     try {
       setPendingMint(true)
       setConfirmMintButtonLabel('Minting')
@@ -190,7 +190,7 @@ export default function Home() {
       // Show notification
       NotificationManager.success('Minting succeeded!')
     } catch(e) {
-      console.log('Error occurred while minting...')
+      // console.log('Error occurred while minting...')
       NotificationManager.error('Minting failed!')
     }
     setPendingMint(false)
@@ -198,10 +198,10 @@ export default function Home() {
   }
 
   useEffect(() => {
-    console.log('fetchReadOnly from nft contract')
+    // console.log('fetchReadOnly from nft contract')
     const fetchReadOnlyStatus = async () => {
       let _publicSaleOpen = await nftContract.methods.PUBLIC_SALE_OPEN().call()
-      console.log('public sale open: ', _publicSaleOpen, '/', Date.now() / 1000)
+      // console.log('public sale open: ', _publicSaleOpen, '/', Date.now() / 1000)
       setPublicSaleStart(_publicSaleOpen)
 
       let _maxQuantity = await nftContract.methods.maxPublicQuantity().call()
@@ -212,9 +212,9 @@ export default function Home() {
       let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
       let _totalSupply = await nftContract.methods.totalSupply().call()
 
-      console.log('_token1: ', _token1)
-      console.log('_token2: ', _token2)
-      console.log('_token3: ', _token3)
+      // console.log('_token1: ', _token1)
+      // console.log('_token2: ', _token2)
+      // console.log('_token3: ', _token3)
 
       let _paymentMethods = [
         {
@@ -264,7 +264,7 @@ export default function Home() {
   }, [nftContract])
 
   useEffect(() => {
-    console.log('recheck allowance')
+    // console.log('recheck allowance')
     if (!activePaymentMethod()) return
 
     let _unitPrice = activePaymentMethod().displayPrice
@@ -286,7 +286,7 @@ export default function Home() {
       let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
       setBalanceOf(_balanceOf)
 
-      console.log('Total Supply: ', _totalSupply, _balanceOf)
+      // console.log('Total Supply: ', _totalSupply, _balanceOf)
     }
 
     if (nftContract) {
@@ -363,7 +363,7 @@ export default function Home() {
         </div>
 
         <p className="total-minted">
-          Minted Corgi: {totalSupply} / 7400
+          Minted Corgi: {totalSupply - 240} / 7400
         </p>
       </div>
 

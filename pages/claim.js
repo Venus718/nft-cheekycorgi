@@ -84,24 +84,24 @@ export default function Claim() {
 
   useEffect(() => {
     const fetchClaimedStatus = async () => {
-      console.log('fetch claimed status ...')
+      // console.log('fetch claimed status ...')
       let _publicSaleOpen = await nftContract.methods.PUBLIC_SALE_OPEN().call()
-      console.log('public sale open: ', _publicSaleOpen, '/', Date.now() / 1000)
+      // console.log('public sale open: ', _publicSaleOpen, '/', Date.now() / 1000)
       setPublicSaleStart(_publicSaleOpen)
 
       let _totalClaimed = await nftContract.methods.totalClaimed().call()
       let _maxClaimable = await nftContract.methods.maxClaimable().call()
-      console.log('total claimed: ', _totalClaimed)
-      console.log('max claimable: ', _maxClaimable)
+      // console.log('total claimed: ', _totalClaimed)
+      // console.log('max claimable: ', _maxClaimable)
       setTotalClaimed(Number(_totalClaimed))
       setMaxClaimable(Number(_maxClaimable))
 
       let _claimed = await nftContract.methods.claimedAddresses(wallet.address).call()
       setClaimed(_claimed)
-      console.log('claimed: ', claimed)
+      // console.log('claimed: ', claimed)
       
       let _claimables = await nftContract.methods.getClaimables().call()
-      console.log('claimables: ', _claimables)
+      // console.log('claimables: ', _claimables)
 
       let _claimableNftContracts = [], _totalBalance = 0, _balances = []
       for (let _contractAddress of _claimables.slice(0, 2)) {
@@ -119,15 +119,15 @@ export default function Claim() {
       setTotalClaimableNftCounts(_totalBalance)
       setClaimableNftBalances(_balances)
 
-      console.log('ucd address: ', _claimables[_claimables.length - 1])
+      // console.log('ucd address: ', _claimables[_claimables.length - 1])
       setClaimableUcdAddress(_claimables[_claimables.length - 1])
 
       let _claimableByUcd = await nftContract.methods.claimableUcdHolders(wallet.address).call()
       setClaimableByUcd(_claimableByUcd)
 
-      console.log('created claimable contracts: ', _claimableNftContracts.length)
-      console.log('claimable nft balance: ', _totalBalance)
-      console.log('claimable by ucd: ', _claimableByUcd)
+      // console.log('created claimable contracts: ', _claimableNftContracts.length)
+      // console.log('claimable nft balance: ', _totalBalance)
+      // console.log('claimable by ucd: ', _claimableByUcd)
     }
 
     if (nftContract) {
@@ -140,11 +140,11 @@ export default function Claim() {
       // [UPDATEME] Remove commenct below
       let _claimed = await nftContract.methods.claimedAddresses(wallet.address).call()
       setClaimed(_claimed)
-      console.log('claimed: ', claimed)
+      // console.log('claimed: ', claimed)
 
       let _totalClaimed = await nftContract.methods.totalClaimed().call()
       setTotalClaimed(Number(_totalClaimed))
-      console.log('total claimed: ', _totalClaimed)
+      // console.log('total claimed: ', _totalClaimed)
   
       let _totalBalance = 0, _balances = []
       for (let _collection of claimableNftContracts) {

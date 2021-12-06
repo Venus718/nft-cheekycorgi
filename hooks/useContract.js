@@ -18,10 +18,10 @@ const useContract = () => {
   const [yieldContract, setYieldContract] = useState()
 
   useEffect(() => {
-    console.log('wallet.connected changed.', wallet.connected)
+    // console.log('wallet.connected changed.', wallet.connected)
 
     if (wallet.connected && wallet.wallet.provider) {
-      console.log('configuring web3, nft/yield contracts ...')
+      // console.log('configuring web3, nft/yield contracts ...')
 
       const _web3 = new Web3(wallet.wallet.provider)
       const _nftContract = new _web3.eth.Contract(NftABI, NFT_CONTRACT_ADDRESS)

@@ -21,23 +21,23 @@ export default function Faq() {
 
   const fetchYieldTokenInfo = async () => {
     const _decimals = await yieldContract.methods.decimals().call()
-    console.log('decimals: ', _decimals)
+    // console.log('decimals: ', _decimals)
     setDecimalsOfYieldToken(Number(_decimals))
 
     const _cap = await yieldContract.methods.cap().call()
-    console.log('cap: ', _cap)
+    // console.log('cap: ', _cap)
     setCapOfYieldToken(Number(_cap) / (10 ** Number(_decimals)))
 
     const _totalSupply = await yieldContract.methods.totalSupply().call()
-    console.log('total supply: ', _totalSupply)
+    // console.log('total supply: ', _totalSupply)
     setTotalSupplyOfYieldToken(Number(_totalSupply) / (10**Number(_decimals)));
 
     const _baseRate = await yieldContract.methods.BASE_RATE().call()
-    console.log('base rate: ', _baseRate)
+    // console.log('base rate: ', _baseRate)
     setBaseRate(Number(_baseRate) / (10**Number(_decimals)))
 
     const _nameChangePrice = await nftContract.methods.NAME_CHANGE_PRICE().call()
-    console.log('name change price: ', _nameChangePrice)
+    // console.log('name change price: ', _nameChangePrice)
     setNameChangePrice(Math.ceil(Number(_nameChangePrice) / (10**Number(_decimals))))
   }
 

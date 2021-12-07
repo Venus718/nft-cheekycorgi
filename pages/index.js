@@ -18,7 +18,7 @@ import erc20ABI from "../data/erc20.json"
 const CoinSelectionModalStyles = {
   content: {
     width: '19rem',
-    height: '19rem',
+    height: '21rem',
     margin: '0 auto',
     top: '30%',
     borderRadius: '1.25rem',
@@ -41,7 +41,7 @@ const PaymentMethod = ({label, icon, active, onClick}) => {
       onClick={onClickHandler}
     >
       <span className="payment-item__info">
-        <img src={icon} />
+        <img src={icon} height="32" />
         <span>{label}</span>
       </span>
       <div className="payment-item__checked">
@@ -208,6 +208,8 @@ export default function Home() {
       let _token1 = await nftContract.methods.PAYMENT_METHODS(0).call()
       let _token2 = await nftContract.methods.PAYMENT_METHODS(1).call()
       let _token3 = await nftContract.methods.PAYMENT_METHODS(2).call()
+      let _token4 = await nftContract.methods.PAYMENT_METHODS(3).call()
+
       let _publicPriceByEth = await nftContract.methods.publicPrice().call()
       let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
       let _totalSupply = await nftContract.methods.totalSupply().call()
@@ -249,6 +251,14 @@ export default function Home() {
           price: Number(_token3.publicPrice),
           contract: new web3.eth.Contract(erc20ABI, _token3.token),
         },
+        {
+          id: 4,
+          name: 'sploot',
+          title: 'SPLOOT',
+          displayPrice: Number(_token4.publicPrice)  / (10**Number(_token4.decimals)),
+          price: Number(_token4.publicPrice),
+          contract: new web3.eth.Contract(erc20ABI, _token4.token),
+        },
       ]
 
       setPaymentMethods(_paymentMethods)
@@ -285,8 +295,6 @@ export default function Home() {
       setTotalSupply(_totalSupply)
       let _balanceOf = await nftContract.methods.balanceOf(wallet.address).call()
       setBalanceOf(_balanceOf)
-
-      // console.log('Total Supply: ', _totalSupply, _balanceOf)
     }
 
     if (nftContract) {
@@ -333,7 +341,7 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="selected">
-                  <img src={`/icons/coin-${selectedCoin}.svg`} style={{width: '2rem'}} />&nbsp;&nbsp;
+                  <img src={`/icons/coin-${selectedCoin}.svg`} style={{height: '2rem'}} />&nbsp;&nbsp;
                   {selectedCoin.toUpperCase()}&nbsp;&nbsp;
                   <img src="/icons/down.svg" alt="down" />
                 </div>
@@ -377,6 +385,7 @@ export default function Home() {
         <PaymentMethod icon="/icons/coin-shiba.svg" label="Shiba" active={selectedCoin==='shiba'} onClick={() => onSelectedCoin('shiba')} />
         <PaymentMethod icon="/icons/coin-usdt.svg" label="USDT" active={selectedCoin==='usdt'} onClick={() => onSelectedCoin('usdt')} />
         <PaymentMethod icon="/icons/coin-usdc.svg" label="USDC" active={selectedCoin==='usdc'} onClick={() => onSelectedCoin('usdc')} />
+        <PaymentMethod icon="/icons/coin-sploot.svg" label="SPLOOT" active={selectedCoin==='sploot'} onClick={() => onSelectedCoin('sploot')} />
       </Modal>
 
       <Modal
@@ -402,7 +411,7 @@ export default function Home() {
             <p>Kindly approve the transaction in your wallet</p>
             <div className="selected-tokens-info">
               <div className="token-label">
-                <img src={`/icons/coin-${selectedCoin}2.svg`} />
+                <img src={`/icons/coin-${selectedCoin}2.svg`} height="20" />
                 <div className="token-label__name">{selectedCoinTitle}</div>
               </div>
               <div className="token-amount">{totalPrice}</div>

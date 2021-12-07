@@ -184,9 +184,6 @@ export default function Claim() {
         <p className="account-info">
           Friendship NFT Found: {totalClaimableNftCounts}
         </p>
-        <p className="hold-info">
-          UCD Found (UU only): {claimableByUcd ? 'Yes' : 'No'}
-        </p>
 
         <div className="mint-button-holder">
           <SubmitButton 
@@ -213,7 +210,7 @@ export default function Claim() {
         </p>
 
         <p className="claimable-nfts">
-          Reserved for ApprovingCorgis, JunkyardDogs,<br/> Uninterested Unicorn holders
+          Reserved for ApprovingCorgis, JunkyardDogs
         </p>
       </div>
     </div>

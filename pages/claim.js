@@ -12,6 +12,7 @@ import useRefresh from '../hooks/useRefresh'
 import erc20ABI from "../data/erc20.json"
 import erc721EnumerableABI from "../data/erc721Enumerable.json"
 import { toReduced } from '../utils/address'
+import { getGasPrice } from '../utils/gasprice'
 
 export default function Claim() {
   const wallet = useSelector(state => state.wallet)
@@ -32,6 +33,8 @@ export default function Claim() {
 
   const [claimableUcdAddress, setClaimableUcdAddress] = useState()
   const [claimableByUcd, setClaimableByUcd] = useState()
+
+  const [ethBalance, setEthBalance] = useState(0)
 
   const onClickClaim = async () => {
     console.log('total claimed: ', totalClaimed)
@@ -64,8 +67,25 @@ export default function Claim() {
 
             let _isClaimedAlready = await nftContract.methods.isClaimedAlready(_collectionId, _tokenId).call()
             console.log('>>>> Claiming CheekyCorgi by ', _collection.address, _tokenId, _isClaimedAlready)
+
+            let _gasPrice = web3.utils.toWei(await getGasPrice(), "gwei")
+            console.log('gas price: ', _gasPrice)
+
             if (!_isClaimedAlready) {
-              await nftContract.methods.claim(_collection.address, _tokenId).send({from: wallet.address})
+              let _gas = await nftContract.methods
+                .claim(_collection.address, _tokenId)
+                .estimateGas({from: wallet.address})
+              
+              if (_gas * Number(_gasPrice) * 1.2 > ethBalance) {
+                return NotificationManager.info('Insufficient Balance!')
+              }
+
+              await nftContract.methods
+                .claim(_collection.address, _tokenId)
+                .send({
+                  from: wallet.address,
+                  gasPrice: _gasPrice
+                })
               setClaimed(true)
               setPendingClaim(false)
               return NotificationManager.success('Successfully claimed!')
@@ -125,6 +145,8 @@ export default function Claim() {
       let _claimableByUcd = await nftContract.methods.claimableUcdHolders(wallet.address).call()
       setClaimableByUcd(_claimableByUcd)
 
+      let _ethBalance = await web3.eth.getBalance(wallet.address)
+      setEthBalance(Number(_ethBalance))
       // console.log('created claimable contracts: ', _claimableNftContracts.length)
       // console.log('claimable nft balance: ', _totalBalance)
       // console.log('claimable by ucd: ', _claimableByUcd)
@@ -160,6 +182,9 @@ export default function Claim() {
       let _claimableByUcd = await nftContract.methods.claimableUcdHolders(wallet.address).call()
       console.log('claimableByUcd: ', _claimableByUcd)
       setClaimableByUcd(_claimableByUcd)
+
+      let _ethBalance = await web3.eth.getBalance(wallet.address)
+      setEthBalance(Number(_ethBalance))
     }
 
     if (nftContract && claimableNftContracts.length > 0) {

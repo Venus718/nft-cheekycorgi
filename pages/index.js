@@ -11,6 +11,7 @@ import useRefresh from '../hooks/useRefresh'
 
 import SubmitButton from '../components/SubmitButton'
 import { toReduced } from '../utils/address'
+import { getGasPrice } from '../utils/gasprice'
 
 import * as Config from '../data/contract'
 import erc20ABI from "../data/erc20.json"
@@ -128,10 +129,20 @@ export default function Home() {
     if (quantity === 0) return
 
     setMintButtonLabel('Minting')
+
     if (selectedCoin === 'eth') {
+      let _gasPrice = web3.utils.toWei(await getGasPrice(), "gwei")
+      console.log('gas price: ', _gasPrice)
+
       setPendingMint(true)
       try {
-        await nftContract.methods.mint(quantity, activePaymentMethod().id).send({from: wallet.address, value: totalPriceWithDecimals})
+        await nftContract.methods
+          .mint(quantity, activePaymentMethod().id)
+          .send({
+            from: wallet.address,
+            value: totalPriceWithDecimals,
+            gasPrice: _gasPrice
+          })
         // notification
         NotificationManager.success('Minting succeeded!')
         setQuantity(0)
@@ -183,7 +194,16 @@ export default function Home() {
     try {
       setPendingMint(true)
       setConfirmMintButtonLabel('Minting')
-      await nftContract.methods.mint(quantity, activePaymentMethod().id).send({from: wallet.address})
+
+      let _gasPrice = web3.utils.toWei(await getGasPrice(), "gwei")
+      console.log('gas price: ', _gasPrice)
+
+      await nftContract.methods
+        .mint(quantity, activePaymentMethod().id)
+        .send({
+          from: wallet.address,
+          gasPrice: _gasPrice
+        })
 
       setQuantity(0)
       onClickCloseApproveModal()

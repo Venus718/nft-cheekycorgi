@@ -255,7 +255,10 @@ export default function MyCorgis() {
         </div>
 
         <div className="sploot-balance__claim-button2">
-          <a href="https://dextools.io" style={{height: "22px"}}>
+          <a href="https://app.uniswap.org/#/swap?inputCurrency=0x7d%C3%A52b4a6b8edb624f9e57e44b69d0efd49dd1a1aa&outputCurrency=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  style={{height: "22px"}}>
+            <img src="/icons/uniswap.png" alt="uniswap" height="24" />
+          </a>
+          <a href="https://www.dextools.io/app/ether/pair-explorer/0x14ff5f7681021d1d2055e46a1deff4450d5d77d8" style={{height: "22px"}}>
             <img src="/icons/logo-dextools.png" alt="dextools" height="22" />
           </a>
           <a href={Config.ETH_SCAN_URL[Config.ACTIVE_NETWORK_ID] + '/address/' + Config.YIELD_TOKEN_CONTRACT_ADDRESS}  style={{height: "22px"}}>
